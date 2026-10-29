@@ -1,0 +1,1170 @@
+\chapter{Authentication techniques and architectures}
+
+\section{What is authentication}
+
+
+\subsection{Definitions of authentication}
+There are three different definitions of \emph{authentication:}
+\begin{itemize}
+	\item \textbf{RGC-4949 (Internet security glossary)}:\\
+	      "the process of verifying a claim that a system entity or system
+	      resource has a certain attribute value"
+	\item \textbf{\url{whatis.com}}:\\
+	      "the process of determining whether someone or something is
+	      who or what it is declared to be"
+	\item \textbf{NIST IR 7298 (Glossary of Key Information Security Terms)}:\\
+	      "verifying the identity of a user, process, or device, often as a
+	      prerequisite to allowing access to resources in an information
+	      system"
+\end{itemize}
+The key aspects of these definitions  are that they define the authentication of an actor, meaning that \textbf{it could be not only a human being} (interacting via software running on hardware) \textbf{but also a software component or a hardware element} (interacting via software). The common shorthand for authentication is \texttt{authN} or \texttt{authC}, while \texttt{authZ} is used for authorization, \textit{which is different but related}.
+% Maybe add a cross-reference to "different but related", idk to what yet
+
+
+\subsection{Authentication factors}
+While authenticating an \emph{actor}, there are three categories of \textbf{authentication factors} that can be used:
+\begin{itemize}
+	\item \textbf{Knowledge}: authentication relies on something that \emph{only the user knows}, for example a static
+	      passphrase, code, or personal identification number.\\
+	      The associated risks involve the storage of this
+	      knowledge, how it can be demonstrated, and the way it is transmitted.
+	\item \textbf{Ownership}: authentication relies on something that \emph{only the user possesses} (often called an
+	      "authenticator"), for example, a token, smart card, or smartphone.\\
+	      The associated risks can be related
+	      to the authenticator itself, such as the possibility of infection with malware, the potential for it to be
+	      manufactured in a country that imposes government control, or the risk of it being stolen, cloned, or
+	      used without the owner's authorization (e.g., forgetting an unlocked smartphone).
+	\item \textbf{Inherence}: \emph{something the user is}, for example, a biometric characteristic (such as a fingerprint).\\
+	      The associated risks include counterfeiting and privacy concerns. Inherence factors pose a greater risk
+	      than the previous cases because, for example, a biometric characteristic \ul{cannot be
+		      replaced when compromised}. For this reason, inherence factors should be limited to very secure environments,
+	      typically used only for local authentication, as a mechanism to unlock a secret or a device.
+\end{itemize}
+
+
+\section{Digital authentication model (NIST SP800.63B)}\label{chap:digital-auth-model}
+
+% Image from slide
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[page = 6,trim = 1cm 2.1cm 1cm 3.8cm, clip, width = 0.50\textwidth]{\slides}
+%    \caption{General model for digital authentication as described in NIST SP800.63B}
+% \end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = 0.70\textwidth]{chapter3/NIST_sp800_63b.png}
+	\caption{General model for digital authentication as described in
+		NIST SP800.63B}
+\end{figure}
+
+\begin{itemize}
+	\item In this model, an actor who wants to use a system
+	      is called an \colorbox{LimeGreen}{\textbf{applicant}}: if it possesses an
+	      authenticator it can provide it to the \colorbox{Goldenrod}{\textit{CSP} (Credential Service Provider)}, or it can get one (for example, when a student is enrolled in Politecnico,
+	      he is given a smart card that works as an
+	      authenticator). The CSP is that component that will
+	      issue or enrol user credential and authenticator, and verify and store associated attributes.
+
+
+	      When this procedure is completed successfully, the actor becomes a \colorbox{Cyan}{\textbf{subscriber}}, which is an entity recorded in the authentication system.
+
+
+	\item Later, when the actor wants to use some network service, typically the actor is called a \colorbox{LimeGreen}{\textbf{claimant}}, because they claim to be a valid user. Typically, an authentication protocol against a \colorbox{Goldenrod}{verifier} is run to verify this claim. When this process ends successfully, the actor becomes
+	      \colorbox{Cyan}{\textbf{a subscriber}} \textbf{with an open authenticated session} with the \colorbox{Goldenrod}{relying party}, that will request and receive an authN assertion from the Verifier to assess user identity (and attributes).
+
+	      The relying party, which requests the actor to be authenticated, is the end application. The verifier may have communication with the CSP to validate the binding between the authenticator used in the authentication protocol and the credential claimed.
+\end{itemize}
+
+\subsubsection{Recap}
+\begin{itemize}
+	\item \textbf{The credential binds an authenticator to the subscriber via an ID}:
+	      \begin{itemize}
+		      \item for example, an X.509 certificate can be considered the credential, as it binds the identity and attributes written inside the certificate with the authenticator. In this case, the authenticator is the private key that the user controls.
+	      \end{itemize}
+	\item \textbf{CSP (Credential Service Provider)}:
+	      \begin{itemize}
+		      \item will issue or enrol user credential and authenticator
+		      \item verify and store associated attributes
+	      \end{itemize}
+	\item \textbf{Verifier}:
+	      \begin{itemize}
+		      \item executes an authN protocol to verify possess of a valid
+		            authenticator and credential
+	      \end{itemize}
+	\item \textbf{Relying party}:
+	      \begin{itemize}
+		      \item will request/receive an authN assertion from the Verifier to
+		            assess user identity (and attributes)
+	      \end{itemize}
+\end{itemize}
+
+
+These roles may be separate or collapsed together.
+Thinking about a \emph{Linux machine} used locally, the enrollment phase involves creating a new user with a username (the credential) and a password (the authenticator). In this scenario, the CSP is the operating system itself, and when a user wants to use a server on this machine, they need to perform login, which is the verifier. The relying party is any software running on that machine that uses the identity as proven by the login service of the operating system.
+
+
+
+Another example is the use of Google Identity for different services, such as the Doodle Service to schedule an
+appointment. For Doodle, there is an option to use Google or Facebook Credentials. In this case, the relying party
+is Doodle, while the verifier (as well as the CSP) is Google or Facebook.
+
+
+\section{Generic authentication protocol}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 8,trim = 0.4cm 3cm 0.4cm 5.5cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{Generic authentication protocol}
+\end{figure}
+Suppose that the user wants to access an application server (Relying Party). In this case, the server will include both the Relying Party and Verifier.
+The user has been identified with the User ID and has a secret associated with that User ID.
+The server's identifier contains a table with the User ID and the result of the function $f$ applied to the secret. Normally, the secret should never be stored in cleartext; of course, if the function $f$ is the identity function, it means you are storing the secret in cleartext, which is not recommended.
+
+When the user wants to access the service, they receive an \textbf{authentication request}. Initially, they provide the \textbf{User ID}, and then the verifier asks for a \textbf{proof request}; the user replies with the \textbf{proof $ = F(S_{\mathrm{UID}})$}, which is the result of the computation with the function $F$ applied to the user's secret.
+
+In this scenario, several problems need to be addressed:
+\begin{itemize}
+	\item On the user side, how is the secret stored? How is the secret provided (e.g., if it is a password entered via a keyboard, a keylogger could disclose it)? Is the transmission of the proof secure?
+	\item On the server side, how are the secrets related to the user stored? When a proof is received, how is it verified to be the correct proof?
+\end{itemize}
+
+
+
+\subsection{Passwords (reusable)}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 9,trim = 0.4cm 5cm 0.4cm 5.5cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{Authentication with password}
+\end{figure}
+
+
+Imagine that the secret is a \textbf{reusable password} (meaning that it is always the same), and the user is identified by their User ID, with the secret being the password associated with that user. On the server side, there is a table containing usernames and passwords in plain text or a function $H$ computed over the password.
+
+Once again, there will be an \textbf{authentication request}, followed by the user sending their \textbf{UID}. Then, a password request is made, and the user responds with \textbf{$P_{\text{UID}}$}.
+
+Assume the network is secure and focus on the verifier's side. The secret is the user's password, and the client creates and transmits the proof, typically using a function $F = I$, which is the identity function. The proof is the password sent in plain text, which is, of course, dangerous.
+
+Now, looking at the server, when the server receives the password, it needs to check if it is correct or not:
+\begin{enumerate}
+	\item first case: if the function $f$ used to store the password is the \textbf{identity function} ($f = I$), then the proof is the password in cleartext. In this scenario, the server knows all the passwords in plain text, and verifying their correctness is simple. However, it is risky; if someone copies the database, they will gain access to all data.
+	\item second case (\ul{the suggested one}): $f$ is not the identity function but a \textbf{one-way hash} (a digest of the password), and the server does not know the password in plain text but only the (unprotected) digest $H_{\mathrm{UID}}$. This means that access control is a bit more complex, as when the proof is received, the hash of the proof is computed and compared with the hash stored in the password database. If the database is stolen, the attacker will not have a copy of the plain-text passwords.
+\end{enumerate}
+
+
+\subsubsection{Problems of reusable passwords}
+Password-based authentication is usually convenient for the user, but only if they have to remember just one password, a reusable one. The current situation is unfortunate because in some applications, there is a need for several passwords that cannot be remembered by a person, so they would need to be stored on the user's side, which is a source of insecurity. The \textbf{disadvantages} of password-based authentication are:
+\begin{itemize}
+	\item \textbf{The user-side password storage}: it could be written on a post-it or on a client-side password manager (also called password wallet), that stores it encrypted typically using only one passphrase;
+	\item \textbf{Guessable passwords};
+	\item \textbf{Server-side password storage}: the server must know the password in cleartext or an unprotected digest of it (dictionary attack);
+	\item \textbf{Sniffing}: Password can be sniffed while it is sent across the network;
+	\item \textbf{DB attacks}: There could be attacks to the password DB at the verifier (if DB contains plaintext or only obfuscated password);
+	\item \textbf{Password guessing}: it is very dangerous if it can be done offline, for example against a list of password hashes;
+	\item \textbf{Password enumeration}: if the password is limited in length or character type, or if authN protocol doesn't block;
+	\item \textbf{Password duplication}: using the same password for different services, due to user password reuse. This could be a problem because if the user has the same password for a high-security service and for a weaker one, an attacker could discover it on the weaker system and have access to the high-security one;
+	\item \textbf{Cryptography aging}: the solution adopted for verifying the secret should not be tied to a specific cryptographic algorithm, because it could be then difficult to adapt to the need for changing the algorithm used, due to new attacks and more computing power;
+	\item \textbf{Password capture} via server spoofing and phishing;
+	\item \textbf{MITM attacks}.
+\end{itemize}
+
+
+
+\subsubsection{Password best practice}
+\begin{itemize}
+	\item Use a \textbf{mixture} of alphabetic characters (both uppercase and lowercase), digits, and special characters. Unfortunately, there are many systems that don't allow the use of special characters or impose limits on password length.
+	\item Use a \textbf{long} password, preferably at least 8 characters in length.
+	\item \textbf{Avoid using dictionary words}, as attackers often employ dictionaries from multiple languages.
+	\item \textbf{Change your password frequently}. If the same password is kept for an extended period, attackers have more time to perform their computations. It's advisable to change your password at least once or twice a year to reduce the window of exposure.
+	\item Whenever possible, \textbf{consider not using passwords}. However, this may be unavoidable unless biometric techniques are employed.
+\end{itemize}
+
+\subsubsection{Storing passwords}
+\paragraph{Storing passwords on the server-side}
+\begin{itemize}
+	\item Never store passwords in cleartext.
+	\item If the password is \textbf{encrypted}, the server must have access to the encryption key in cleartext, which can be a security concern. To enhance security, it's recommended to \textbf{store a password digest}. However, be cautious of dictionary attacks that can be expedited by techniques such as \textbf{rainbow tables}. To mitigate these types of attacks, you can introduce an unpredictable element known as a "\textbf{salt}".
+\end{itemize}
+
+
+\subsubsection{Storing passwords on the client-side}
+\begin{itemize}
+	\item Passwords should be memorized by the user.
+	\item If there are numerous passwords to manage, consider using an encrypted file or a password wallet.
+\end{itemize}
+
+
+
+\subsection{The "Dictionary" Attack}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width = 0.30\textwidth]{chapter3/dictionary_attack.jpg}
+\end{figure}
+
+If you store the plain hash of a password, dictionary attacks are possible. This is possible under two hypotheses:
+\begin{enumerate}
+	\item known hash algorithm;
+	\item leakage of information, so that the attacker has a copy of the \textbf{password hash values}.
+\end{enumerate}
+Hashes are not invertible functions, but it is possible to make a \textbf{pre-computation}. Therefore, even if there is no copy of any password hash yet, it is possible to decide that it would be worthwhile to attack passwords stored as plain SHA-1 hashes in the future.
+
+You must obtain a dictionary containing not only the Italian language but all possible languages.
+For each word in the dictionary, you compute the hash of the word and store it in a database paired with the corresponding word.
+By "word," we mean a potential passphrase, not a part of it.
+Typically, attackers have dictionaries extended to include words such as names of famous people.
+
+
+The main hypothesis is that the user has chosen one of the words contained in the dictionary. The attack proceeds as follows:
+\begin{enumerate}
+	\item At some point, the attacker obtains a hash value due to a leakage.
+	\item The attacker performs a simple \textbf{lookup} as follows:
+	      \( w = \mathrm{lookup}(\mathrm{DB}, \mathrm{HP}) \),
+	      where DB is the database
+	      and HP is the computed hash of a word in the database, if any of the hash passwords appears in any tuple.
+	\item If the response is positive, the password is equal to that word. If not, the password is not from the dictionary.
+\end{enumerate}
+
+\textbf{Pre-computation} is the key because if you wait until you get a copy of the password hash, and only at that point you start computing all the possible hash values, it could be too late because the password could have changed.
+
+\subsection{Rainbow table}
+A dictionary attack can be made faster and more effective by the \textbf{Rainbow table} technique. It is still a \textit{dictionary attack}, \ul{but it involves a trade-off between space and time}. Trying all possible passwords and computing the hash would be fast, but the result would be a huge database. If you have a complete database, the lookup would be fast, but fewer passwords are stored, and a bit more time is taken to compute the password if the corresponding hash is present. This is an improvement because \ul{it makes an exhaustive attack feasible for certain password sets}.
+
+Imagine creating a rainbow table to attack a password that we know contains 12 digits.
+The exhaustive attack would require $10^{12}$ rows, which is a huge number of lines containing passwords and the corresponding hash values.
+A rainbow table could be used to reduce the number of rows in the database by a factor of 1000. In this way, we get a $10^9$ rows database, where each line represents 1000 passwords. To achieve that, we use the \textbf{reduction function}:
+\[
+	r: h \Rightarrow p
+\]
+It is a function $r$ that takes a hash as input and creates one possible password. \textbf{Beware that this is NOT the inverse of the hash ($h^{-1}$)}, because the inverse of the hash does not exist. It is just a mapping function that, from a hash, creates one of the possible passwords of the whole set; in other words, the reduction function is a different function with a \ul{swapped domain and codomain of the hash function}.
+
+For other informations, check \url{https://en.wikipedia.org/wiki/Rainbow_table}.
+
+\paragraph{Pre-computation}
+Then, the pre-computing is the following:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 15,trim = 1cm 2.5cm 7cm 13cm, clip, width = 0.55\textwidth]{\slides}
+\end{figure}
+
+\begin{enumerate}
+	\item Select $10^9$ distinct passwords (the desired size) called $P$.
+	\item For each of them, initialize the computation starting from that specific password, and then iterate 1000 times; each time the hash of the current password is computed (called $k$), and then the reduction function is used to go from $k$ to another possible password.
+	\item At the end, the password $P$ of the first cycle is stored in the database together with the last computation of the reduction function (called $p$).
+	\item Then, the entry implicitly represents all the 1000 passwords tried. Note that there is no more hash to be stored.
+\end{enumerate}
+
+
+\paragraph{Attack}
+Then the attack rises in this way:
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 16,trim = 1cm 8.2cm 3cm 5cm, clip, width = 0.55\textwidth]{\slides}
+\end{figure}
+
+\begin{enumerate}
+	\item $\mathrm{HP}$ is the leaked hash of a password;
+	\item Start an iteration of at most 1000 times, and each time, the reduction function is used to derive a possible password from the hash value;
+	\item Next, search the database to check if there is a row where $p$ (the result of the reduction function) is at the end of the chain. In that case, we found the chain containing that hash; otherwise, a new value $k$ is calculated by performing the password hash;
+	\item After finding the chain, the computation of the hash must be done again to identify which hash matches the one we have.
+\end{enumerate}
+
+The problem is that since the reduction function is going from a hash to one possible password, there could be
+two different hashes that generates the same password, and this is called \textbf{fusion}. Rather than using a reduction
+function, a set of n reduction functions is used, one for each reduction step. On internet there are on sale pre-
+computed rainbow tables for various hash functions and password sets (e.g., SHA1 for alphanumeric).
+
+
+This technique is used by various attack programs.
+
+
+\subsection{Using salt in storing passwords}
+The critical point in the previous kind of attack is that the attacker performs pre-computation. Without the rainbow
+table and without the database created by the dictionary,
+it would take a lot of time. For this reason, \textbf{do not provide the attacker with the information needed for pre-computation},
+because it is based on the idea that the attacker may know which is the password (through the dictionary).
+
+\begin{itemize}
+	\item Using the following technique, even if it can be possible to guess what a possible password is, the attacker
+	      does not get the hash table because every time a User ID is created, the system generates a \textbf{salt} that is different for each user.\\
+	      The salt is a random (unpredictable) and long (increased dictionary complexity) string of bytes.
+	      Users do not have to memorize the salt, which should contain rarely used or control characters.\\
+	      Then the hash is computed using the password concatenated with salt:\\
+	      $\mathrm{HP} = hash(pwd | salt)$;
+	\item The verifier stores UID,
+	      $\mathrm{HP}_{\mathrm{UID}}$ and $salt_{\mathrm{UID}}$.\\
+	      If someone gets the information in the database, he also gets the salt, but only then the
+	      computation can start, which will require a lot of time and in the meanwhile the password could have been
+	      changed. Additionally, there are different HP for users having the same password.
+\end{itemize}
+
+This makes the dictionary attacks nearly impossible (including those based on rainbow tables).
+
+
+\subsubsection{Example: Passwords in Linux}
+Originally stored in \texttt{/etc/passwd}, hashed with a DES-based
+hash function named \texttt{crypt()}.
+Since \texttt{/etc/passwd} needs to be world-readable (contains
+usernames, UID, GID, home, shell, etc.), passwords have been
+moved to \texttt{/etc/shadow}, readable only by system processes.
+Passwords are stored in the following form - see \texttt{crypt(5)}:
+
+\begin{verbatim}
+  $id$salt$hashedpwd
+\end{verbatim}
+Different hash functions are used depending on the ID, for example:
+\begin{itemize}
+	\item 1 = MD5, \ldots, 5 = SHA-256, 6 = SHA-512, \ldots
+\end{itemize}
+If \texttt{\$id\$salt} is absent, the old DES-based hash is used (with
+a 12-bit salt, and the password is truncated to 8 characters) - danger!
+Some algorithms have adjustable complexity (to counter brute-force attacks).
+
+
+\begin{casehistory}{The LinkedIn Attack}
+	In June 2012, someone was able to copy 6.5 million passwords from LinkedIn, which were unsalted plain SHA-1
+	hashes. The person published those hashes on the internet and asked for crowdsourcing, used for cooperative
+	password cracking (which means trying to compute SHA-1 hashing of words and looking if someone has a match).
+	At least 236,578 passwords were found before Interpol was able to ban the website that published the
+	password hashes.
+
+	Note that simultaneously LinkedIn found out that the LinkedIn app for iPad/iPhone was sending in clear sensitive data
+	(not relevant to LinkedIn!).
+\end{casehistory}
+
+\subsubsection{Example: Passwords in MySQL}
+\textbf{MySQL} is a database where usernames and passwords are stored in the "user" table. MySQL (from v4.1) uses a \textbf{double hash (without salt!)} to store passwords:
+\[
+	\texttt{SHA-1(SHA-1(password))}
+\]
+Then, the hex encoding of the result is stored, preceded by * (to distinguish this case from MySQL versions < 4.1). For example, for the password "Superman!!!," the field \texttt{user.password} is
+\begin{verbatim}
+    user.password = *868E8E4F0E782EAA610A67B01E63EF04817F60005
+\end{verbatim}
+To verify that this is the double hash of the word, you can use the following command on Linux:
+\begin{verbatim}
+  $ echo -n "Superman!!!" | sha1sum | xxd -r -p | sha1sum
+\end{verbatim}
+This is the standard way for MySQL to store passwords, which is not secure. It is advisable to change the standard way MySQL uses to store passwords by using a salted approach.
+
+
+\section{Strong (peer) authN}
+Recently, there has been a growing emphasis on the requirement to move away from standard authentication methods and adopt strong peer authentication. While this is consistently requested in specifications, it is often not formally defined or defined in multiple, potentially confusing ways.
+
+
+
+\subsection{ECB Definition for Internet Banking}
+According to the European Central Bank (ECB), \ul{strong customer authentication (authN) is a procedure based on the use of two or more of knowledge, ownership, and inherence.} The selected elements must be \ul{mutually independent}, ensuring that the breach of one does not compromise the others. At least one element should be non-reusable and non-replicable (except for inherence), and not capable of being surreptitiously stolen via the Internet. The strong authentication procedure should be designed to protect the confidentiality of the authentication data; for example, if a password is used, it cannot be sent in clear text.
+
+
+\subsection{PCI-DSS Definition for Payment with Credit Cards}
+According to the PCI-DSS definition, which applies to payment with credit cards, starting from v3.2, multi-factor authentication (MFA) is required for access into the cardholder data environment (CDE). This requirement is applicable regardless of whether the network is trusted or untrusted, and it is also mandatory for administrators accessing the CDE.
+
+The only exception is for direct console access, which involves physical security measures, such as entering the room where the server is located. However, for remote access, MFA is always required, especially from untrusted networks, and for users and third parties (e.g., maintenance).
+
+This best practice was in effect until January '18 and became mandatory thereafter.
+
+\textbf{Remember}: MFA does \textbf{not} mean using the same factor twice, like using two passwords.
+
+
+
+\subsection{Other definitions}
+According to the \textit{Handbook of Applied Cryptography},\\
+authentication is a \textbf{cryptographic challenge-response identification protocol}.
+
+More in general, it is a technique resisting to a well-defined set of attacks.
+
+An authN technique can be classified as strong or weak depending on the attack model:
+\begin{itemize}
+	\item E.g., users of Internet Banking follow the ECB definition;
+	\item E.g., employees of PSP adhere to the PCI-DSS definition.
+\end{itemize}
+
+In general, pay attention to your specific application field because it defines the types of risks and the level of strength required for your strong authentication.
+
+
+
+
+\section{Challenge-Response Authentication (CRA)}
+Challenge-response protocol is a possible way to implement strong authentication. CRA means that there is a
+challenge sent to the Claimant from the Verifier. The Claimant replies with the solution computed using some
+secret knowledge and the challenge. The Verifier compares the response with a solution computed via a secret
+associated with the Claimant.
+
+
+% Using minipage
+\vspace{2mm}
+\noindent
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page = 25,trim = 0.5cm 2.2cm 1cm 9.8cm, clip, width = \linewidth]{\slides}
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.4\textwidth}
+	Someone claims to own the identifier (ID). The verifier looks that there is a row
+	associated with that ID and sends to the
+	claimant the challenge. The claimant has
+	a key (\(K_c\)) and uses it to perform some
+	kind of computation (function \(f\)) and
+	generates a response. The response can
+	be checked by applying the function \(g\) to
+	the challenge and to a well-known key (\(K_V\)) of the Verifier. The keys can be different or the same.
+\end{minipage}
+
+
+\subsubsection{General issues of CRA}
+\begin{itemize}
+	\item \textbf{The challenge must be non-repeatable to avoid replay attacks}. For this reason, usually, the challenge
+	      is a (random) nonce.
+	\item \textbf{The function \(f\) must be non-invertible}, otherwise, a listener can record the traffic and easily find the
+	      shared secret by using the function \(K_c = f^{-1}(response, challenge)\).
+\end{itemize}
+
+
+
+\subsection{Symmetric CRA}
+
+\noindent
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page = 27,trim = 0.5cm 2.2cm 1cm 9.8cm, clip, width = \linewidth]{\slides}
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.4\textwidth}
+	In this case, there is a common key
+	shared between Claimant and Verifier,
+	which is typically the password or
+	passphrase of the user. The function \(f\) is computed two times: once from the user
+	to make the response, and once from the
+	verifier to verify the match.
+\end{minipage}
+
+\subsubsection{General issues of Symmetric CRA}
+General issues with Symmetric CRA are:
+\begin{itemize}
+	\item The easiest implementation uses a hash function (faster than encryption) such as SHA1 (deprecated),
+	      SHA2 (recommended) or SHA3 (future);
+	\item \(K_{ID}\) must be known in cleartext to the Verifier and this may lead to attacks against the \( \{ID: K_{ID}\} \) table at the Verifier;
+\end{itemize}
+There is a technique called \textbf{SCRAM} (Salted CRA Mechanism) which solves this problem by using hashed
+passwords at the Verifier, which also offers \underline{channel binding} and \underline{mutual authentication}, while we are always talking about single authentication
+
+
+\subsubsection{Mutual symmetric CRA (v1)}
+\noindent
+\begin{minipage}{0.4\textwidth}
+	Imagine that we are not using a hash but encryption (although it would work in the same way), and let's consider the scenario of mutual authentication.
+
+	Alice and Bob share a key \(K_{AB}\), and Alice sends a message \(A\) to Bob (which means: "Hey, I'm Alice!").
+	Bob responds with a challenge \(C_B\),
+	and Alice replies with \(\text{enc}(K_{AB}, C_B)\), which is the encryption of the challenge using the shared key.
+	Then, Alice could create a challenge (\(C_A\)), and Bob would respond in the same way by computing \(\text{enc}(K_{AB}, C_A)\).
+	\ul{This approach provides protection against MITM attacks because, if the challenges are nonces, the Replay Attack is not possible.}
+
+	\textbf{Beware!} This protocol is outdated and insecure.
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page = 29,trim = 4cm 2.2cm 4cm 9cm, clip, width = \linewidth]{\slides}
+\end{minipage}
+
+\subsubsection{Mutual symmetric CRA (v2)}
+\vspace*{5mm}
+\noindent
+\begin{minipage}{0.4\textwidth}
+	IBM, in its SNA network system, employed a similar technique with a different implementation: they reduced the number of messages for improved performance without compromising security.
+
+	In the initial step, Alice transmits both the identity (\(A\)) and the challenge (\(C_A\)). The response from Bob includes both the challenge (\(C_B\)) and the encryption \(\text{enc}(K_{AB}, C_A)\). Finally, Alice responds with \(\text{enc}(K_{AB}, C_B)\). Although this may appear equivalent to the previous solution in terms of functionality and security, \underline{it is not}.
+
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page = 30,trim = 4cm 2.2cm 4cm 9cm, clip, width = \linewidth]{\slides}
+\end{minipage}
+
+
+
+
+\subsubsection{Attack to the mutual symmetric CRA (v2)}
+\vspace*{5mm}
+\noindent
+\begin{minipage}{0.4\textwidth}
+	Here, Mike pretends to be Alice. Mike sends to Bob Alice's identity (\(A\)) and Alice's challenge (\(C_A\)). Bob replies with \(C_B\) and \(\text{enc}(K_{AB}, C_A)\).
+
+	At this point, Mike does not know \(K_{AB}\) and cannot compute the response to the challenge. However, Mike opens a new connection with Bob, sending Alice's identity (\(A\)) again but, this time, sends the challenge sent from Bob (\(C_B\)). Bob replies again with another challenge (\(C_C\)) and \(\text{enc}(K_{AB}, C_B)\), which is the answer to the challenge of the 1st connection. Mike can finally provide the correct answer.
+
+	\ul{Of course, this can be countered if there is a limit on connections}.
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page = 31,trim = 2cm 2.2cm 2cm 4cm, clip, width = \linewidth]{\slides}
+\end{minipage}
+
+\ifthenelse{\boolean{showNew}}{
+	\subsubsection{GSM (in)security}
+	In our discussion on improved authentication methods beyond basic passwords, we highlighted the effectiveness of the challenge-response approach with symmetric keys. To illustrate this concept in a real-world scenario, let's delve into GSM authentication and its relevance to security.
+
+
+	\textbf{GSM} (\textit{Global System for Mobile Communications}) has been designed violating the principle of security through obscurity and
+	relies on three confidential algorithms:
+	\begin{itemize}
+		\item A8, operating within the \underline{SIM} (Subscriber Identity Module), focuses on symmetric key generation, laying the foundation for secure connections.
+		\item A3, also embedded in the \underline{SIM}, handles authentication processes, providing a robust framework for verifying user identities.
+		\item Additionally, A5, a stream cipher implemented in the \underline{mobile device}, contributes to data encryption, safeguarding sensitive information during transmission.
+		      \begin{itemize}
+			      \item GSM's security approach introduces some level of secrecy through the implementation of A5/1 and A5/2, where A5/1 is the more commonly used variant and A5/2 is intentionally weakened in specific regions for surveillance purposes.
+			      \item A5/3, based on the Kasumi block cipher, offers an alternative encryption method, but it's not widely used.
+		      \end{itemize}
+	\end{itemize}
+
+	Implementing \textbf{security through obscurity}, as highlighted, is inherently problematic. This approach is not only detrimental in terms of the algorithm's efficacy but also raises concerns about the design process itself. The fact that a limited group of individuals crafted the process without seeking revisions, reviews, or insights from external experts resulted in a suboptimal design. This underlines the importance of inclusive and collaborative design practices for creating robust and effective security measures.
+
+	Furthermore, the discretion of Mobile Network Operators (MNOs) comes into play, allowing them to choose algorithms for A8, A3, and A5. Typically, A8 and A3 are constructed using the COMP128 secret function, involving the computation of \[Z = \text{COMP128}(X, Y)\]
+	with each variable being 128 bits.
+	A8 extracts the least significant 54 bits of Z to generate the connection key \[Kc = lsb( 54, Z )\]
+	while A3 utilizes the most significant 32 bits of Z to produce a "\textit{Signed RESponse}" \[SRES = msb( 32, Z )\]
+	actually this is not a digital signal because it is not using any public key.
+
+	\paragraph{GSM Security Overview}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[page = 34,trim = 3cm 3cm 3cm 4cm, clip, width = 0.50\textwidth]{\slides}
+		\caption{GMS authentication}
+	\end{figure}
+	\begin{figure}[h]
+		\centering
+		\includegraphics[page = 35,trim = 3cm 3cm 3cm 4cm, clip, width = 0.50\textwidth]{\slides}
+		\caption{GMS encryption}
+	\end{figure}
+	In GSM authentication, a symmetric Challenge-Response Authentication (CRA) is employed to verify the identity of the Mobile Station (\textbf{MS}),such as a mobile phone, to the Base Station (\textbf{BS}) through its SIM.
+	The SIM holds an \textbf{individual subscriber authentication key} ($Ki$), a confidential 128-bit secret shared with the Authentication Centre (AC). \\
+	The process unfolds as the BS transmits a random 128-bit challenge ($C$) to the SIM, and in response, the SIM computes the 32-bit Signed Response (SRES) using the A3 algorithm with inputs $C$ and $Ki$:
+	\[\text{SRES} = A3( C, Ki )\]
+	This value is, in fact, a keyed digest, as it is computed based on a key.
+
+
+	However, a notable vulnerability arises with COMP128-1, which is identified as weak. Exploiting chosen-challenge and differential cryptanalysis techniques, a relatively modest number of challenges, around 150,000, are adequate to compute Ki. This weakness opens the door to potential security breaches, enabling actions such as SIM cloning, where an unauthorized party can replicate the SIM, sharing the same Ki.\\
+	Consequently, with the compromised Ki, the attacker gains the ability to decrypt the communication traffic by computing the Connection Key ($Kc$) for that specific Ki and the challenge ($C$) sent by the BS. This vulnerability highlights the importance of addressing weaknesses in authentication protocols to ensure the integrity of GSM security.
+}{}
+
+
+\subsection{Asymmetric CRA}
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 36,trim = 0.5cm 2.3cm 0.5cm 8cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{Asymmetric CRA}
+\end{figure}
+It is also possible to employ an asymmetric challenge-response mechanism. In this scenario, the user does not transmit their identity directly but rather provides their X.509 certificate, which declares both their identity and public key (the claimant possesses the corresponding private key, $ID.PK$). The Verifier initiates the process by generating a challenge, employing a random nonce \(R\) encrypted with the public key. The claimant decrypts the challenge using their private key and returns the decrypted value to the Verifier. If the response matches the \(R\) value specified in the challenge, it confirms possession of the private key. The only necessary verification involves checking if a valid ID is registered in the Verifier's database.
+
+\paragraph{Asymmetric CRA: analysis}
+Asymmetric Challenge-Response Authentication (CRA) is \ul{the strongest usable mechanism}, eliminating the need for storing any secrets at the Verifier. It is consistently implemented for \textit{peer authentication} (client and server) in protocols such as IPsec, SSH, and TLS.
+Additionally, it serves as a fundamental component for user authentication in a new authentication system named FIDO (Chapter \ref{chap:fido}).
+
+However, it comes with certain downsides:
+\begin{itemize}
+	\item \textbf{Slowness}, stemming from the inherent sluggishness of asymmetric cryptography.
+	\item Inaccurate design may result in \textbf{unintentional signature creation by the Claimant}.
+	      The Claimant, while receiving something, performs a computation with the private key.
+	      This computation, used both for decryption and creating a signature, poses a risk of inadvertently signing a document. To mitigate this risk, the data provided as input for decryption on the claimant-side must follow a \underline{specific format}.
+	\item Public Key Infrastructure (\textbf{PKI}) \textbf{issues}, including concerns related to \textit{trusted roots}, \textit{name constraints}, and \textit{revocation}, since it relies on certificates. These issues can be avoided if the Verifier stores \(ID.PK\), however this strategy shifts the equivalent PKI effort to the Verifier.
+	      This approach is adopted by SSH, wherein the public key is taken and made public on the server, despite with the significant risk of someone potentially altering the key stored on the server.
+\end{itemize}
+
+
+\subsection{One-time password (OTP)}
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 38,trim = 0.5cm 3cm 1cm 5cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{One Time Password (OTP)}
+\end{figure}
+Instead of employing reusable passwords, users are assigned passwords that are valid for a single login session. When a claimant seeks access to the server, they respond by providing their userID. Subsequently, the server issues a request for a specific password from an extensive list, for instance, password number 48. If passwords $P49_{UID}$ and $P50_{UID}$ have already been utilized, the user transmits $P48_{UID}$ and marks it as used in the table.
+
+At this juncture, the server maintains a table containing user identifiers (UID) and the undisclosed secret ($S_{UID}$) that the user is unaware of.
+This secret is utilized for password generation. The Verifier, in turn, replicates the function used to generate the password to regenerate it and verifies if it aligns with the one transmitted by the user. This methodology renders passwords \textbf{immune to} potential \textbf{sniffing attacks}, as they can be transmitted in plaintext, knowing that the subsequent login will involve a different password.
+
+\paragraph{Summary}
+\begin{itemize}
+	\item The password in this authentication protocol is \textbf{only valid for a single run}, necessitating a new password for each subsequent authentication session.
+	\item This characteristic makes it \textbf{immune to sniffing attacks}, as the intercepted password becomes obsolete after one use.
+	\item However, it is \textbf{subject to} Man-in-the-Middle (\textbf{MITM}) attacks when an entity assumes the role of the verifier. To mitigate this risk, Verifier authentication is essential.
+	\item Provisioning for subscribers involves managing a large number of passwords, leading to potential password exhaustion.
+	\item Additionally, \textbf{inserting passwords can be challenging} due to their typically random and complex nature, designed to prevent guessing attacks.
+\end{itemize}
+
+\subparagraph{OTP provisioning to the users}
+For OTP provisioning to users, additional precautions may be necessary when the claimant operates on a device lacking computational capabilities or on an insecure/untrusted workstation. In such cases, physical safety measures can include:
+\begin{itemize}
+	\item A sheet of paper containing pre-computed passwords.
+	\item Hardware authenticator (crypto token): a device where passwords are stored or generated.
+\end{itemize}
+
+By contrast, when working on an intelligent and secure/trusted workstation, OTPs can be \textbf{automatically computed} by a dedicated application (commonly found in smartphones, tablets, laptops, etc.).
+
+
+\subsubsection{The S/KEY system}
+This was the first OTP definition and implementation by Bell Labs (1981).
+\begin{itemize}
+	\item The user generates a secret \(S_{ID}\).
+	\item Then the user autonomously computes \(N\) one-time passwords where \(P_1 = h(S_{ID})\), \(P_2 = h(P_1)\), ..., \(P_N = h(P_{N-1})\) (associated hash).
+	\item The Verifier stores the last one \(P_N\). This password will never be used directly for authentication but only indirectly.
+	\item When the user wants to access the server, the Verifier (which has \(P_N\)) asks for \(P_{N-1}\) and gets \(X\) from the user. Then the following check is performed:
+	      % TODO: align them as with code
+	      \begin{align*}
+		      \text{if } (P_N \neq h(X)) \text{ then FAIL} \\
+		      \text{else OK; store } X \text{ as } P_{N-1}
+	      \end{align*}
+\end{itemize}
+
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 43,trim = .5cm 2.1cm .5cm 3.6cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{The S/KEY System}
+\end{figure}
+
+
+The technique employed here involves the Verifier requesting passwords \textbf{in reverse order}. This approach allows the Verifier to operate without the need to possess knowledge of the user's secret, placing the responsibility on the user to be familiar with all passwords. This methodology is detailed in RFC-1760 and employs MD4 (although alternative options are possible). \(S/KEY\) serves as an illustration of an Off-line / Pre-computed OTP.
+
+It is crucial to note that \textbf{MITM} (Man-in-the-Middle) \textbf{attacks are possible with OTP}. Consequently, \(S/KEY\) should be utilized in conjunction with \textbf{server authentication}.
+
+
+\paragraph{S/KEY - generation of the password list}
+The user inserts a passphrase (PP), which must be a minimum of 8 characters long and kept secret. If disclosed, the security of S/KEY is compromised. The passphrase is concatenated with a server-provided seed (sent in cleartext from S to C), allowing the use of the same passphrase for multiple servers (using different seeds). It is also possible to safely reuse the same passphrase by changing the seed.
+
+A 64-bit quantity is extracted from the MD4 hash, which generates a 128-bit result (by XORing the first/third 32-bit groups and the second/fourth groups).
+
+\paragraph{S/KEY - passwords}
+64-bit passwords represent a compromise, and entering them in hexadecimal form requires 16 characters. Typically, they are input as a sequence of six short English words selected from a dictionary of 2048 (e.g., 0 = A, 1 = ABE, 2 = ACE, 3 = ACT, 4 = AD, 5 = ADA).
+
+This entails choosing 11 bits from the computed hash and utilizing a dictionary with simple words corresponding to the combinations (2048 in this case). \textbf{It is crucial that the client and server share the same dictionary}. For instance:
+\begin{itemize}
+	\item \textbf{Password (text)}: "YOU SING A NICE OLD SONG," not because it serves as a password but because “YOU” is one of the words in the dictionary, representing 11 bits. In total, there are 6 words, resulting in 66 bits (more than 64, ensuring security).
+	\item \textbf{Password (numeric)}: 1D6E5001884BD711 (hex) or 2,120,720,442,049,943,313 (decimal).
+\end{itemize}
+This is merely an illustrative example of encoding a lengthy bit string in a user-friendly manner.
+
+
+\subsubsection{Time-based OTP}
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 46,trim = 1cm 3cm 1cm 7cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{Time Based OTP}
+\end{figure}
+In this solution, the password depends on time and the user's secret:
+\[p(ID, t) = h(t, S_{ID})\]
+When the claimant wants to authenticate, it receives a request from the verifier and submits its own ID plus the value generated by a device (authenticator), which tells the claimant which is the correct password to be entered at that moment. At that point, the verifier needs to check if the value is the current OTP for the current time. Since the verifier has a large table containing, for each user, the corresponding secret, it can perform the same computation and compare it.
+
+This type of OTP requires local computation at the subscriber and clock synchronization (or keeping track of time-shift for each subscriber). Due to the fact that the password needs time to be sent, the time needs to be quantized (considering timeslots, usually ranging from 30 to 60 seconds), and an authentication window is established. Usually, the verifier considers the password as correct if it is generated one timeslot before or one timeslot after the correct timeslot according to its own time. In formulas, the authentication succeeds if\footnote{Here "$\Vert$" means \texttt{logical or} instead of \texttt{concatenated}}
+\[
+	X == p(ID, t) \quad \Vert \quad
+	X == p(ID, t - 1)
+	\quad \Vert \quad X == p(ID, t + 1)
+\]
+(where \(t\) is the timeslot). Typically, only one authentication run per timeslot is allowed, which might not be suitable for some services, for example, a broker that needs to perform many transactions concurrently.
+
+This system is \textbf{susceptible to time-based attacks} against both subscribers and the Verifier. Typically, servers and clients synchronize their time with an external source, and \ul{an attack can be executed using a fake NTP server or a mobile network femtocell}. For instance, if an attacker successfully deceives the subscriber into providing a password for a future timeslot, they can exploit it at that specific time.
+
+Since the Verifier stores the secret for each user, it must manage a highly sensitive database. In the event of a security breach where the database is compromised, the attacker gains the ability to impersonate users and compute the passwords for any user. An incident of this nature occurred in an attack against a TOTP system named \textit{RSA SecurID}.
+
+\paragraph{A TOTP example: RSA SecurID}
+In this system, the Claimant sends the triple \{\textit{user},\textit{PIN}, \textit{tokencode(seed, time)}\} in clear to the Verifier.
+As \textit{RSA SecurID} is a physical device continuously displaying the correct password, if someone other than the subscriber reads and uses it, an attacker could gain access with the subscriber's identity. This emphasizes the need for an additional authentication factor. Therefore, one factor is "\textit{owning the device}" while the other is "\textit{knowing the (reusable) password}".
+
+Since it could be possible for the PIN to be sniffed while sent across the network, there is a variant of the \textit{SecurID} authenticator that includes a “pin pad” (a sort of small keyboard just for entering the PIN).
+When the PIN is entered, the value of the PIN is taken into account for the generation of the OTP. In this case, it is possible to send just the user and the modified token code (the tuple \{\textit{user, token-code*(seed, time, PIN)}\}), which is also a function of the PIN.
+Based on the user and PIN, the Verifier checks against three possible token codes: $TC_{-1}$, $TC_{0}$, $TC_{+1}$, as in any TOTP system.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 49,trim = .5cm 2.05cm .5cm 4cm, clip, width = 0.55\textwidth]{\slides}
+\end{figure}
+Moreover, each device is associated with \underline{two PINs}: the first one is the one used normally for \underline{authentication}, while the second is called \underline{duress code}, and it is used to generate an alarm when the subscriber is under attack (for example, when the user is forced by a criminal to authenticate).
+
+
+\subparagraph{SecurID: architecture}
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 50,trim = .5cm 2.2cm .5cm 4cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{SecurID: architecture}
+	\label{fig:ace}
+\end{figure}
+
+Besides providing the hardware authenticator which computes the token code,
+RSA also provides some component called \textbf{ACE} (Access Control Engine):
+\begin{itemize}
+	\item \textbf{ACE client} is installed at the Relying Party, which is the server that wants to use the authentication system;
+	\item \textbf{ACE server} implements the Verifier.
+\end{itemize}
+In the illustration (Figure \ref{fig:ace}), the ACE server positioned at the top serves as the verifier, possessing the comprehensive information required to validate a token code. The service servers represent the Relying Party, entities necessitating access control integration with RSA SecurID. To interact with the verifier and authenticate user credentials, these servers must implement the ACE client. On the left of the depicted scenario, remote access to an SSH server is illustrated: the user, equipped with a standard SecurID device, submits the triple \texttt{\{user, PIN, TC\}}. Upon receiving this information, the Relying Party forwards it to the verifier, which subsequently delivers a response indicating the validity of the provided credentials. On the right side of the picture, an unsuccessful authentication attempt is exemplified, employing a device with a pin pad.
+
+The significance of examining this architecture extends beyond its role as a SecurID implementation. It serves as a comprehensive model, highlighting the need for server enhancements to accommodate specialized authentication methods (e.g., DBMS software in the provided example). When a company aims to deploy a uniform authentication technology across various servers, a centralized verifier becomes essential. This verifier can offer authentication verification services for all relaying parties, drawing parallels with the \textit{NIST schema} (Chapter \ref{chap:digital-auth-model}) in this regard.
+
+
+
+\subsubsection{Event-based OTP}
+The principal problem with TOTP is that only one authentication per timeslot is allowed.
+This solution introduces a monotonic integer counter, denoted as $C$, as an additional input alongside the seed:
+\[
+	p(ID, C) = h(C, S_{ID})
+\]
+
+It requires local computation at the subscriber, where the counter is incremented (e.g., through a button press), allowing for frequent authentication runs.
+While this system enables OTP pre-computation, even by adversaries with temporary access to the authenticator, it poses challenges for the Verifier in handling \textbf{desynchronization} issues. For instance, if the subscriber unintentionally triggers the button, desynchronization may occur.
+To address this, a counter window is considered, defining a set of counters with a fixed and typically small size. In formula terms, a password is deemed correct if
+\[
+	X == p(ID, C) || X == p(ID, C + 1) || X == p(ID, C + 2) || \ldots
+\]
+with a maximum of ten subsequent counters to resist exhaustive attacks.
+\ul{Verifiers can adapt to desynchronization, storing the counter that matched the password sent by the user}.
+If none of the passwords generated on the user side is acceptable, a counter reset may be required, such as in cases where a child presses the button more than ten times.
+
+
+\subsubsection{Out-of-band OTP}
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 52,trim = 1cm 3cm 1cm 5cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{Out-of-band OTP}
+\end{figure}
+
+The solutions illustrated so far require the user to receive something: a list of passwords in the case of S/KEY or a device in the case of TOTP and EOTP. In situations where these options are not feasible, such as the inability to securely provide the list or a lack of trust in the user's device, Out-of-Band OTP can be utilized. This method is based on generating the OTP without using the normal communication channel.
+
+In the schema depicted in the figure, the user is provided with a secret key, which is a \textit{reusable password}. During authentication, the user sends the user ID and the reusable password, necessary for clear user identification. Although reusable passwords may not be very robust, the verifier can ensure the user's authenticity through the third step: it looks up the registered phone number in its database. Subsequently, the verifier generates an OTP and sends it (out of band) to the user's cell phone, typically via SMS (step four). This process is considered out of band because the OTP transmission uses a different medium than the communication between the server and the user. Finally, in step five, the user provides the OTP just received.
+
+% TODO: is this good practice?
+\paragraph{}
+This is a widely used system by many banks and identity providers, such as those involved in SPID. This system also reduces the burden on the user, who does not need to have a modern smartphone but just a minimal device to receive the message: the OTP is generated by the server only when needed and then sent in a trusted way to the user. However, be aware that at step five, a secure channel with server authentication is needed to avoid MITM attacks. The Out-of-Band (OOB) channel is frequently a text via SMS message. Since most mobile networks are nowadays implemented with VoIP, mobile user identification, and SS7 protocol (which are quite insecure), NIST suggests using the Push mechanism over a TLS channel to the registered subscriber device. This is done by putting the message inside a notification, the confirmation of which is made by inserting the user's fingerprint.
+
+
+\subsubsection{Two-/Multi- Factors AuthN (2FA/MFA)}
+It has already been pointed out that, if we want to provide strong authentication, more than one factor should be used. This is also named \textbf{2FA}, or more generally, \textbf{MFA}. MFA is used both to increase authentication strength and to protect the physical authenticator, as seen with OTP. Usually, a \textbf{PIN} is used for authenticator protection.
+\begin{itemize}
+	\item \textbf{PIN transmitted along with OTP:} As seen, the possible problem is that it can be sniffed when entered or transmitted across the network.
+	\item \textbf{PIN entered to compute the OTP itself:} Like in RSA SecurID.
+	\item \textbf{PIN (or inherence factor) used to unlock the authenticator,} which is very risky if:
+	      \begin{itemize}
+		      \item No protection from \textbf{multiple unlock attempts}.
+		      \item \textbf{The lock mechanism} is weak, for example, the fingerprint sensor is not strong enough to recognize only the device owner's fingerprint.
+		      \item \textbf{Unlocking is valid for a time window}: if someone has access to the authenticator in the time window in which it is unlocked, then they can use the user identity.
+	      \end{itemize}
+\end{itemize}
+
+\subparagraph{Importance of MFA: the Iphone ransomware}
+In May 2014, a security incident occurred involving iCloud accounts with single-factor authentication, resulting in unauthorized access.
+The attackers employed a "remote lock" feature through the "Find My Device" functionality. Users of affected devices, such as iPhones and iPads, received a menacing message indicating the breach: "\textit{Device hacked by Oleg Pliss!}"
+The attackers demanded a payment of 100 USD/EUR via a specified PayPal account (lock404(at)hotmail.com) for the restoration of control.
+
+Alternatively, users were informed of the option to use "recovery mode," although this came at the cost of losing all device data and applications. It's crucial to note that even complying with the payment demand did not guarantee a resolution, as the attackers provided a fake PayPal account.
+This incident highlighted the vulnerabilities associated with single-factor authentication and emphasized the importance of robust security measures in safeguarding user accounts.\\
+\href{http://thehackernews.com/2014/05/apple-devices-hacked-by-oleg-pliss-held.html}{More info here.}
+
+\subsection{Authentication of human beings}
+Ensuring that the subscriber is a human rather than a program can be achieved through two solutions:
+\begin{itemize}
+	\item \textbf{CAPTCHA} techniques (\textit{Completely Automated Public Turing test to tell Computers and Humans
+		      Apart}): for example, a picture with images of distorted characters;
+	\item \textbf{Biometric} techniques: for example, fingerprints.
+\end{itemize}
+
+
+\subsubsection{Biometric systems}
+The main idea is to measure a biological characteristic of the user, such as fingerprint, voice, retinal scan, iris scan, hand's blood vein pattern, heart rate, and hand geometry.
+EHowever, it is important to note that each technique can potentially be circumvented. Moreover, biometrics is not replaceable, highlighting the necessity of implementing additional security measures to mitigate potential vulnerabilities.
+Regardless of the chosen biometric solution, two parameters must be considered:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 59,trim = 2.5cm 2.5cm 2.5cm 4cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{FAR and FRR}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{FAR (False Acceptance Rate):} the rate at which the system incorrectly accepts a biometric signal as valid.
+	\item \textbf{FRR (False Rejection Rate):} the rate at which the system erroneously rejects a valid signal as if it were fake.
+\end{itemize}
+The two normal distributions refer to fingerprints that match (green) and those that do not. The two distributions overlap, necessitating the establishment of a threshold. Regardless of where the threshold is set, it is important to note that FAR and FRR cannot both be equal to zero.
+They may be partly tuned, but they heavily depend on the cost of the device. Moreover, some biological characteristics are variable; for example, the user can have a finger wound, the voice altered due to emotion, or retinal blood pattern altered due to alcohol or drugs.
+
+Other than technical challenges, there are also various non-technical issues:
+\begin{itemize}
+	\item \textbf{Psychological acceptance}:
+	      \begin{itemize}
+		      \item "Big Brother" syndrome, related to personal data collection.
+		      \item Some technologies are intrusive and could be harmful; for example, retinal scans may not be suitable for everyone.
+	      \end{itemize}
+	\item \textbf{Privacy concerns} arise since, at this point, it is not just a matter of authentication but of identification, making it irrepudiable.
+	\item Biometric features \textbf{cannot be changed} if copied. Unlike passwords, which can be changed if there is a fear of disclosure, a biometric authentication cannot. Therefore, it should not be sent across the network and can only be useful for locally replacing a PIN or a password.
+	\item \textbf{Lack of a standard API/SPI} leads to:
+	      \begin{itemize}
+		      \item High development costs.
+		      \item Heavy dependence on single/few vendors.
+	      \end{itemize}
+\end{itemize}
+
+%\ifthenelse{\boolean{showNew}}{
+\subsection{Kerberos (and SSO)}
+
+Kerberos, named after the three-headed dog from Greek mythology that guarded the entrance to the underworld, is an authentication system based on a \textit{Trusted Third Party} (\textbf{TTP}).
+Originally developed as part of the MIT project Athena, Kerberos holds significance beyond the realm of HTTP-based services.
+
+One of its distinguishing features is its innovative approach to user password management; rather than transmitting passwords across the network, Kerberos utilizes them \underline{only locally}, as \textbf{symmetric cryptographic keys}.
+In the Kerberos framework, there are two important concepts:
+\begin{itemize}
+	\item the term "\textbf{realm}" denotes the Kerberos domain, which represents the collection of systems employing Kerberos as their authentication system.
+	\item Additionally, a \textbf{credential} within Kerberos is identified as \texttt{user.instance@realm}, resembling an email address but specific to the Kerberos domain. This structure attaches to each user the role that the user is assuming at this moment for a given operation.
+\end{itemize}
+
+
+\paragraph{Ticket}
+Kerberos employs a data structure known as a \underline{ticket} for client authentication to servers. These tickets possess a \textbf{variable lifetime}. In the earlier Version 4, the maximum duration was restricted to 21 hours, structured around five-minute time slots, totaling 255. However, in the more recent Version 5, the validity period is explicitly defined, allowing tickets to be valid for an extended duration, even years. Despite being potentially unlimited, it is recommended to opt for shorter duration tickets to mitigate potential security risks associated with prolonged authentication privileges.
+
+One notable characteristic of Kerberos tickets is their encryption with the \textbf{symmetric key of the target server}. This encryption ensures that the ticket remains secure and can only be decrypted at the destination server, adding an extra layer of protection to the authentication process.
+
+In the initial Kerberos \textit{Version 4}, \textbf{tickets were bound to the IP address of the client}, serving as an identifier for accessing a specific server. However, recognizing the vulnerability of IP addresses to spoofing, this association with IP addresses was eliminated in Version 5, enhancing the robustness of the Kerberos authentication system.
+
+It's essential to highlight that each ticket is uniquely tied to a single credential. If a user possesses multiple credentials, they must obtain distinct tickets for each credential. While the primary purpose of tickets is to facilitate client authentication, Kerberos also offers the optional feature of server authentication using these tickets.
+
+% \begin{figure}[h]
+%   \centering
+%   \includegraphics[page = 63,trim = 1cm 2.5cm 1cm 4cm, clip, width = 0.55\textwidth]{\slides}
+%   \caption{Kerberos High-level view}
+% \end{figure}
+
+
+\subsubsection{Protocol description}
+The protocol is described in detail below\footnote{Editor's note: This section is taken from \url{https://en.wikipedia.org/wiki/Kerberos_(protocol)}. I thought it could be simpler and more concise, and it aligns with the content in the slides}.
+See Figure \ref{fig:kerberos}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[trim = 1cm 1cm 1cm 1cm, clip, width = 0.9\textwidth]{chapter3/kerberos.png}
+	\caption{Kerberos protocol}
+	\label{fig:kerberos}
+\end{figure}
+
+% TODO This is just for comparison, consider removing it
+\paragraph{User Client-based Login example without Kerberos}
+
+\begin{enumerate}
+	\item A user enters a username and password on the client machine(s). Other credential mechanisms like pkinit (RFC 4556) allow for the use of public keys in place of a password. The client transforms the password into the key of a symmetric cipher. This either uses the built-in key scheduling, or a one-way hash, depending on the cipher-suite used.
+	\item The server receives the username and symmetric cipher and compares it with the data from the database. Login was a success if the cipher matches the cipher that is stored for the user.
+\end{enumerate}
+
+
+\paragraph{Client Authentication}
+
+\begin{enumerate}
+	\item The client sends a cleartext message of the user ID to the AS (Authentication Server) requesting services on behalf of the user. (Note: Neither the secret key nor the password is sent to the AS.)
+	\item The AS checks to see whether the client is in its database. If it is, the AS generates the secret key by hashing the password of the user found at the database (e.g., Active Directory in Windows Server) and sends back the following two messages to the client:
+	      \begin{itemize}
+		      \item Message A: \texttt{Client/TGS Session Key} encrypted using the secret key of the client/user.
+		      \item Message B: \texttt{Ticket-Granting-Ticket} (TGT, which includes the client ID, client network address, ticket validity period, and the \texttt{Client/TGS Session K}ey) encrypted using the secret key of the TGS.
+	      \end{itemize}
+	\item Once the client receives messages A and B, it attempts to decrypt message A with the secret key generated from the password entered by the user. If the user entered password does not match the password in the AS database, the client's secret key will be different and thus unable to decrypt message A. With a valid password and secret key, the client decrypts message A to obtain the \texttt{Client/TGS Session Key}. This session key is used for further communications with the TGS. (Note: The client cannot decrypt Message B, as it is encrypted using TGS's secret key.) At this point, the client has enough information to authenticate itself to the TGS.
+\end{enumerate}
+
+
+
+\paragraph{Client Service Authorization}
+\begin{enumerate}
+	\item When requesting services, the client sends the following messages to the TGS:
+	      \begin{itemize}
+		      \item Message C: Composed of the message B (the encrypted TGT using the TGS session key) and the ID of the requested service.
+		      \item Message D: Authenticator (which is composed of the client ID and the timestamp), encrypted using the \texttt{Client/TGS Session Key} (found by the client in Message A).
+	      \end{itemize}
+	\item Upon receiving messages C and D, the TGS retrieves message B out of message C. It decrypts message B using the TGS secret key. This gives it the Client/TGS Session Key and the client ID (both are in the TGT). Using this \texttt{Client/TGS Session Key}, the TGS decrypts message D (Authenticator) and compares the client IDs from messages B and D; if they match, the server sends the following two messages to the client:
+
+	      \begin{itemize}
+		      \item Message E: \texttt{Client-to-server ticket} (which includes the client ID, client network address, validity period, and Client/Server Session Key) encrypted using the service's secret key.
+		      \item Message F: \texttt{Client/Server Session Key} encrypted with the \texttt{Client/TGS Session Key}.
+	      \end{itemize}
+\end{enumerate}
+
+
+
+\paragraph{Client Service Request}
+
+\begin{enumerate}
+	\item Upon receiving messages E and F from TGS, the client has enough information to authenticate itself to the Service Server (SS). The client connects to the SS and sends the following two messages:
+
+	      \begin{itemize}
+		      \item Message E: From the previous step (the \texttt{Client-to-server ticket}, encrypted using service's Secret key by the TGS).
+		      \item Message G: A new Authenticator, which includes the client ID, timestamp and is encrypted using \texttt{Client/Server Session Key}.
+	      \end{itemize}
+
+	\item  The SS decrypts the ticket (message E) using its own secret key to retrieve the \texttt{Client/Server Session Key}. Using the sessions key, SS decrypts the Authenticator and compares client ID from messages E and G; if they match server sends the following message to the client to confirm its true identity and willingness to serve the client:
+
+	      \begin{itemize}
+		      \item Message H: The timestamp found in client's Authenticator (plus 1 in version 4, but not necessary in version 5), encrypted using the \texttt{Client/Server Session Key}.
+	      \end{itemize}
+
+	\item The client decrypts the confirmation (message H) using the \texttt{Client/Server Session Key} and checks whether the timestamp is correct. If so, then the client can trust the server and can start issuing service requests to the server.
+	\item The server provides the requested services to the client.
+\end{enumerate}
+
+
+\paragraph{Kerberos versions}
+Kerberos has evolved through various versions, with MIT V4 marking its original implementation. The subsequent version, MIT V5 (also known as RFC-1510), introduced significant enhancements.
+Unlike its predecessor, MIT V5 supports encryption beyond DES, offering increased security options. Notably, it extended the ticket lifetime by specifying explicit begin-end validity periods.
+Additionally, MIT V5 introduced features such as inter-realm authentication, forwardable tickets, and extendable tickets. This version enabled users to achieve a single login for access to all Kerberized services. These services encompassed a diverse range, including K-POP, K-NFS, K-LPD, K-telnet, K-ftp, and K-dbms.
+Furthermore, Kerberos found adoption in Windows domains, with Microsoft incorporating it into their systems starting from Windows 2000.
+
+The subsequent evolution of Kerberos is reflected in \texttt{RFC-4120}, which supersedes \texttt{RFC-1510}. One notable improvement is the introduction of algorithm flexibility, allowing clients and servers to support different encryption algorithms. Originally, Kerberos utilized DES-CRC32, but over time, it expanded its repertoire to include 3DES, RC4, AES, Camellia, MD4, and MD5.
+
+To enhance security, \texttt{RFC-4120} introduced pre-authentication measures, aiming to thwart password enumeration or dictionary attacks on the Ticket Granting Ticket (TGT). For instance, in Windows, the \texttt{AS\_REQ} must contain encrypted forms of the user's key and timestamp.
+
+\paragraph{TGT request with PKINIT}
+\texttt{RFC-4120} (v5) brings support for asymmetric cryptography, applicable specifically in the \texttt{AS\_REQ} phase, the initial phase of the protocol when making a request to the authentication server.
+
+
+This feature, known as \texttt{PKINIT} (Public Key Initialization), modifies the Ticket Granting Ticket (TGT) request. In this process, a user seeks a ticket for the Ticket Granting Server (TGS). Unlike previous versions, the authentication server no longer stores user passwords, significantly improving security. Even in the event of an attack on the authentication server, no clear passwords are compromised. Instead, the server stores the public keys of users. Consequently, the server's response to the user's request is encrypted not with a password but with the user's public key. To decrypt this response, the user employs their private key, eliminating the need for storing passwords. In essence, the user relies on a key pair—public and private—rather than a password, and the authentication server utilizes the public key for encryption in the initial step of the authentication process. This paradigm shift represents a substantial advancement in security and authentication within the Kerberos framework.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[page=65, trim=.7cm 4cm .7cm 5cm, clip, width=\textwidth]{\slides}
+		\caption{TGT request}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.45\textwidth}
+		\includegraphics[page=70, trim=.7cm 4cm .7cm 5cm, clip, width=\textwidth]{\slides}
+		\caption{TGT request with PKINIT}
+	\end{subfigure}
+	\caption{Client authentication}
+\end{figure}
+
+
+
+\subsubsection{SSO (Single Sign-On)}
+
+Kerberos is an example of a more general concept of \textit{SSO} (Single Sign-On), where users possess a single "credential" to authenticate themselves and gain access to various services in the system.
+
+\begin{itemize}
+	\item \textbf{Fictitious SSO:}
+	      \begin{itemize}
+		      \item Client for automatic password synchronization/management (alias "password wallet").
+		      \item Specific for some applications only.
+	      \end{itemize}
+
+	\item \textbf{Integral SSO:}
+	      \begin{itemize}
+		      \item Multi-application authentication techniques (e.g., asymmetric CRA, Kerberos), likely requiring a change in the applications.
+		      \item Multi-domain SSO (e.g., with SAML tokens, that generalize Kerberos tickets).
+	      \end{itemize}
+\end{itemize}
+
+
+
+\subsection{Authentication interoperability: OATH}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 72,trim = 1cm 2.5cm 1cm 10cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{OATH}
+\end{figure}
+
+As mentioned, companies that manage numerous servers aim to implement a unified authentication system for all their relying parties, namely the application servers. However, this implies the ability to purchase a verifier and use it with devices created by different companies. In the past, achieving such interoperability was challenging. For instance, when acquiring RSA SecurID devices, it was necessary to also procure the ACE client and ACE server from RSA. Moreover, RSA did not disclose the hash algorithm used in generating the token code.
+
+To address this challenge, an initiative called \href{http://www.openauthentication.org/}{OATH} was introduced. The primary goal of OATH is to establish \ul{interoperability among authentication systems based on One-Time Passwords (OTPs) and symmetric or asymmetric challenges}. This is achieved through the development of standards for the client-server protocol and the data format on the client, aiming to realize universal strong authentication.
+
+So far, OATH has provided the following \href{http://www.openauthentication.org/specifications}{specifications}:
+\begin{itemize}
+	\item \textbf{HOTP} (HMAC OTP, RFC-4226)
+	\item \textbf{TOTP} (Time-based OTP, RFC-6238)
+	\item \textbf{OATH Challenge-Response Protocol} (OCRA, RFC-6287)
+	\item \textbf{Portable Symmetric Key Container} (PSKC, RFC-6030): When using OTP, the shared secret must be protected. This solution offers an XML-based key container for transporting symmetric keys and key-related metadata.
+	\item \textbf{Dynamic Symmetric Key Provisioning Protocol} (DSKPP, RFC-6063): It is a client-server protocol for provisioning symmetric keys to a crypto-engine by a key-provisioning server.
+\end{itemize}
+
+\subsubsection{HOTP}
+
+Let us define:
+\begin{itemize}
+	\item \(K\): shared secret key (between Verifier and Subscriber);
+	\item \(C\): counter (monotonic positive integer number);
+	\item \(h\): cryptographic hash function (by default is SHA1);
+	\item \(\text{sel}\): function to select 4 bytes out of a long byte string.
+\end{itemize}
+
+The HMAC-based OTP is computed in the following way:
+\[
+	\text{HOTP}(K, C) = \text{sel}(\text{HMAC}-h(K, C)) \ \&\& \ \mathtt{0x7FFFFFFF}
+\]
+where the mask \(\mathtt{0x7FFFFFFF}\) is used to set \(MSB=0\) (to avoid problems if the result is interpreted as a signed integer). Then to generate an \(N\)-digit (6-8) access code:
+\[
+	\text{HOTP code} = \text{HOTP}(K, C) \mod 10^N
+\]
+
+In this way, we implement an event-based OTP.
+
+
+\subsubsection{TOTP}
+To create a Time-based OTP (TOTP), the process is similar to HOTP, but the counter \(C\) is the number of intervals \(TS\) elapsed since a fixed origin \(T_0\). In formulas:
+\[ C = \frac{(T - T_0)}{TS} \]
+Where, in the default (RFC-6238), \(T_0\) is the Unix epoch (1/1/1970), \(T\) is \texttt{unixtime(now)} seconds elapsed since the Unix epoch, \(TS\) is equal to 30 seconds, \(h\) is \texttt{SHA1} (but may use SHA-256 or SHA-512), and \(N\) is equal to 6.
+
+The crucial point is that with the same base functions, \textit{it is possible to implement both TOTP and EOTP}.
+
+Moreover, this standard is essential because Google provides free open-source implementations of both HOTP and TOTP, for both the client and the server. In \textbf{Google authenticator}, \(K\) is provided base-32 encoded (most often as a QR code), \(C\) is provided as \texttt{uint\_64}, \(TS\) is equal to 30 seconds, \(N\) is equal to 6, and the function \(\texttt{sel}(X)\) is such that: an offset with the 4 least-significant-bits of \(X\) is considered, then it returns \(X[\texttt{offset}...\texttt{offset + 3}]\). If the generated code contains less than 6 digits, then it is left padded with zeroes (e.g., 123 → 000123).
+The availability of this code from Google has significantly contributed to the widespread usage of this standard.
+
+
+\subsubsection{FIDO}\label{chap:fido}
+One of the most recent attempts to increase the security of authentication is the standard named \textbf{FIDO} (\textit{Fast IDentity Online}). It is an industry standard of the FIDO Alliance for:
+\begin{itemize}
+	\item biometric authentication (referred to as \textit{passwordless user experience} in FIDO terminology);
+	\item 2-factor authentication (referred to as \textit{2nd factor user experience} in FIDO terminology).
+\end{itemize}
+
+So, the focus of FIDO is \ul{to simplify the user experience in authentication}, allowing them to use a biometric system and more than one factor. The main concept of FIDO is not to invent another device but to let the user exploit any personal device capable of asymmetric cryptography (e.g., laptop or smartphone). Inside FIDO, it will be used:
+\begin{itemize}
+	\item for responding to an asymmetric challenge;
+	\item for the digital signature of texts.
+\end{itemize}
+
+The FIDO protocols are designed from the ground up to protect user privacy. The protocols do not provide information that can be used by different online services to collaborate and track a user across services. Biometric information, if used, never leaves the user's device.
+
+
+% \begin{figure}[h]
+%   \centering
+%   \begin{subfigure}{0.65\textwidth}
+%     \includegraphics[page=78, trim=5cm 2.2cm 5cm 4cm, clip, width=\textwidth]{\slides}
+%     \caption{FIDO registration}
+%     \label{fig:fido-registration}
+%   \end{subfigure}
+%   \hfill
+%   \begin{subfigure}{0.65\textwidth}
+%     \includegraphics[page=79, trim=5cm 2.2cm 5cm 4cm, clip, width=\textwidth]{\slides}
+%     \caption{FIDO login}
+%     \label{fig:fido-login}
+%   \end{subfigure}
+%   \caption{FIDO}
+% \end{figure}
+
+
+\paragraph{FIDO registration}
+Differently from other systems, in which registration is usually performed by a new classical username and password creation, or by reusing the user's Facebook or Google identity, FIDO uses the user's device with asymmetric cryptography. When registering with FIDO:
+
+
+
+\noindent
+\begin{minipage}{0.4\textwidth}
+	\begin{enumerate}
+		\item User is prompted to choose an available FIDO authenticator that matches the online service's acceptance policy.
+		\item User unlocks the FIDO authenticator using a fingerprint reader, a button on a second-factor device, securely-entered PIN or other method.
+		\item User's device creates a new public/private key pair \ul{unique for the local device, online service, and user's account}.
+		\item Public key is sent to the online service and associated with the user's account. The private key and any information about the local authentication method (such as biometric measurements or templates) never leave the local device.
+	\end{enumerate}
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page=78, trim=6cm 2.1cm 6cm 4cm, clip, width=\textwidth]{\slides}
+\end{minipage}
+
+\vspace*{5mm}
+Please note that the real user's identity can be fictitious! However, the real identity of the user is not important, only the key is: the private key is stored inside the device and the public key is sent to the web server and associated with the name decided for authentication. \ul{There is the use of asymmetric cryptography but no X509 certificates (it is not needed)}, because the public key is stored at the server, associated with a name.
+
+
+
+\paragraph{FIDO login}
+
+After signing up, there are four steps to be performed to log in:
+
+\noindent
+\begin{minipage}{0.4\textwidth}
+	\begin{enumerate}
+		\item Online service challenges the user to log in with a previously registered device that matches the service's acceptance policy: in this phase, the username and (reusable) password are provided by the user;
+		\item User unlocks the FIDO authenticator using the same method as at Registration time.
+		\item \underline{Device uses the user's account identifier provided by the service} to select the correct key and sign the service's challenge: this identifier is retrieved by considering the pair username-password;
+		\item Client device sends the signed challenge back to the service, which verifies it with the stored public key and logs in the user.
+	\end{enumerate}
+\end{minipage}
+\hspace{0.05\textwidth}
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[page=79, trim=6cm 2.07cm 6cm 4cm, clip, width=\textwidth]{\slides}
+\end{minipage}
+
+
+\paragraph{FIDO U2F registration}
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 80,trim = 3.3cm 2.2cm 3.3cm 3.7cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{FIDO U2F registration}
+\end{figure}
+In the registration phase, typically, the work starts with the browser or with an application that typically communicates with the server. The user registration phase means that the website on which the users try to sign up \textbf{must} have a FIDO U2F backend, which is something that can manage the FIDO protocol.
+
+When a registration request arrives, \ul{the backend will send a registration request to the device, including a hash} (like a nonce, to protect the integrity of transmission). The browser/app will pass it to the FIDO U2F device (which can be software or hardware). Then the user must explicitly activate the device, authorize the keypair generation and the handle generation, which is an identifier for this specific key (typically the hash of the public key).
+
+The registration response is then sent along with the public key and the key handle. These items are validated in the final step (5), and the key-handle pair is stored.
+
+
+\paragraph{FIDO U2F authentication}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 81,trim = 3.3cm 2.2cm 3.3cm 3.7cm, clip, width = 0.55\textwidth]{\slides}
+	\caption{FIDO U2F authentication}
+\end{figure}
+Authentication typically begins with the submission of the username and reusable password to the FIDO U2F backend. The backend initiates a challenge that must be addressed using the key associated with the provided username. Upon receiving the challenge, the user activates the device once again, selects the key (based on the key handle submitted by the server), and resolves the challenge. Subsequently, the solved challenge is sent to the server for verification.
+
+
+\paragraph{FIDO: Other Characteristics \& Security Analysis}
+
+FIDO uses:
+\begin{itemize}
+	\item \textbf{Biometric techniques}: local authentication method to enable the FIDO keys stored only on the user device;
+	\item \textbf{Secure transactions}: digital signature of a transaction text (in addition to the response to the challenge) with the same key used for authentication. This is done to avoid MITM attacks;
+	\item FIDO backend (or server): to enable the use of FIDO on an application server;
+	\item FIDO client: to create and manage credentials FIDO on a user device.
+\end{itemize}
+
+About security and privacy, FIDO provides:
+\begin{itemize}
+	\item \textbf{Strong authentication} (asymmetric cryptography);
+	\item \textbf{No 3rd party in the protocol:} since there is no use of X509 certificates. It's a sort of direct trust between user and web server;
+	\item \textbf{No secrets on the server side}: not exposed to any confidentiality attack. Of course, since it stores public keys and identifiers of the users, authentication and integrity for those data is needed;
+	\item \textbf{Biometric data} (if used) \textbf{never leave user device};
+	\item \textbf{No phishing because authN response cannot be reused}: it is a signature over the transaction text, including the RP identity (which means that the same response cannot be used on another server);
+	\item Since one new keypair is generated at every registration, we obtain \textbf{no link-ability among}: different services used by the same user; different accounts owned by the same user.
+	\item There is no limit in private key generated, because \textbf{private keys are not stored in the authenticator but recomputed} (generated on-the-fly) as needed based on an \textbf{internal secret} and \textbf{RP identity}. Using a proper internal function with the secret, it can be possible to use RP identity to compute private key.
+\end{itemize}
+
+\paragraph{FIDO Evolution}
+
+The evolution of FIDO is as follows:
+\begin{itemize}
+	\item Feb 2013: FIDO alliance launched;
+	\item Dec 2014: FIDO v1.0;
+	\item Jun 2015: Bluetooth and NFC as transport for U2F;
+	\item Nov 2015: submission to W3C of the Web API for accessing FIDO credentials;
+	\item Feb 2016: W3C creates the Web Authentication WG to define a client-side API that provides strong authentication functionality to Web Applications, based on the FIDO Web API;
+	\item Nov 2017: FIDO v2.0.
+\end{itemize}
+
+\paragraph{FIDO 2.0}
+
+With FIDO 2.0, a new protocol, the \textbf{CTAP} (\textit{Client To Authenticator Protocol}), is defined for connecting an external authenticator to the platform. During authentication initiation, the RP application can utilize the \texttt{web authN JS API} to access FIDO. The API operates within the browser, on top of a platform (such as Linux, iOS, Android). Two choices are available: \textbf{a local authenticator} (e.g., a private key stored in a file on Windows) or an \textbf{external device paired with the device using the CTAP protocol}. This protocol operates through USB, BT, NFC, etc., and keys are always present. This represents a kind of \textit{roaming authenticator} as the device can be used with multiple application devices.
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[page = 85,trim = 1cm 1.3cm 1cm 3.32cm, clip, width = 0.55\textwidth]{\slides}
+	\caption*{FIDO 2.0}
+\end{figure}
+
+In case of using an internal authenticator, there are cryptographic elements (more or less secure) capable of storing and using asymmetric keys.
+For example:
+\begin{itemize}
+	\item \textbf{Packed attestation}: an authenticator with limited resources (e.g., a Secure Element in Android);
+	\item \textbf{TPM attestation}: a special chip providing robust security features, capable of generating and using asymmetric keys;
+	\item \textbf{Android Key attestation}: an authenticator available from Android Nougat onward;
+	\item \textbf{Android SafetyNet attestation}: an authenticator for Android via the SafetyNet API;
+	\item \textbf{FIDO U2F attestation}: an authenticator for FIDO U2F using the FIDO-U2F Message Format.
+\end{itemize}

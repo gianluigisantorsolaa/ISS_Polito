@@ -1,0 +1,3 @@
+[submodule "latex-templates"]
+	path = latex-templates
+	url = https://github.com/cybersecurity-polito/latex-templates

@@ -1,0 +1,26 @@
+# LaTeX build artifacts
+*.aux
+*.toc
+*.lof
+*.lot
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.idx
+*.ind
+*.ilg
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.bcf
+*.run.xml
+*.loa
+*.lol
+# Generated / heavy
+marker_out/
+notes.zip

@@ -1,0 +1,121 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage{styles/polito-notes}      % Load the custom package for Politecnico di Torino - Cybersecurity
+
+% Additional necessary packages
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor}  % Extended color options
+\usepackage{graphicx}            % Include images
+\usepackage{subcaption}          % Sub-figures and captions
+\usepackage{booktabs}            % Enhanced table formatting
+\usepackage{amsmath, amssymb}    % Math symbols and environments
+\usepackage{wrapfig}             % Text wrapping around figures
+\usepackage{soul}                % Highlighting text
+\usepackage{float}               % Float control for figures/tables
+\usepackage{tcolorbox}           % Colored boxes
+\usepackage{ifthen}              % Conditional content
+\usepackage[top=2cm, bottom=2cm, left=1.5cm, right=1.5cm]{geometry} % Page margins
+\hypersetup{hidelinks} %Hide red lines containers
+\newtcolorbox{nota}[1]{colback=yellow!5!white,colframe=yellow!75!black,fonttitle=\bfseries,title={#1}} %For simply notes
+\graphicspath{{./images/}} % Path for images
+
+% General document information
+\title{Lecture Notes of \\Information Systems Security (01TYMUV, 01TYMUW)}
+\degree{Master's Degree in Cybersecurity}
+\author{Marco Smorti \\ Riccardo Zaccone \\ Giovanni Nicosia}
+\professor{Prof. Antonio Lioy}
+\academicyear{2023/2024}
+\date{February 2024}
+
+\begin{document}
+
+\maketitlecustom % Custom command to create the personalized title page
+
+\tableofcontents % Generate the table of contents
+\newpage
+
+\newboolean{showOld} % shows content no longer present in the slides
+\setboolean{showOld}{true}
+\newboolean{showNew} % shows content added in 2023/24
+\setboolean{showNew}{true}
+\newboolean{showSolution}
+\newboolean{showComments}
+
+\definecolor{Comment}{RGB}{255,0,0}
+\newcommand{\sol}[1]{
+	\ifthenelse{\boolean{showSolution}}
+	{
+		\textbf{#1}
+	}
+	{#1} % else
+}
+
+\newcommand{\com}[1]{
+	\ifthenelse{\boolean{showComments}}
+	{
+		\textbf{Explanation}: #1
+	}
+	{} % else
+}
+% "mod" without too much space
+\newcommand{\Mod}{\text{ mod }}
+
+% Framed box for "Case history"
+\newtcolorbox{casehistory}[1]{colback=yellow!5!white,colframe=yellow!75!black,fonttitle=\bfseries,title={Case history: #1}}
+
+
+\part{Theory}
+
+\def\slides{slides/01_intro.pdf}
+\include{chapters/chapter1}
+
+\def\slides{slides/02_crypto.pdf}
+\include{chapters/chapter2}
+
+\def\slides{slides/03_authN.pdf}
+\include{chapters/chapter3}
+
+\def\slides{slides/04_netsec_p1.pdf}
+\include{chapters/chapter4}
+
+\def\slides{slides/05_firewall.pdf}
+\include{chapters/chapter5}
+
+\def\slides{slides/06_netsec_p2.pdf}
+\include{chapters/chapter6}
+
+\def\slides{slides/07_schannels.pdf}
+\include{chapters/chapter7}
+
+\setcounter{chapter}{8} % Reserving chap8
+
+\part{Social Engineering}
+\include{chapters/chapter_social_engineering}
+
+\part{Exercises without solutions}
+\setboolean{showSolution}{false}
+\setboolean{showComments}{false}
+
+\setcounter{chapter}{20}
+\include{exercises/exercise1}
+\include{exercises/exercise2}
+\include{exercises/exercise3}
+\include{exercises/exercise4}
+\include{exercises/exercise5}
+\include{exercises/exercise6}
+
+
+\part{Exercises}
+\setboolean{showSolution}{true}
+\setboolean{showComments}{true}
+
+\setcounter{chapter}{30}
+\include{exercises/exercise2}
+\include{exercises/exercise3}
+\include{exercises/exercise4}
+\include{exercises/exercise5}
+\include{exercises/exercise6}
+
+\appendix
+
+\end{document}

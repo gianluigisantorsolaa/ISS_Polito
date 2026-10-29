@@ -1,0 +1,280 @@
+\chapter{Social engineering: a sociological perspective}
+
+\section{Introduction}
+
+Most security incidents involve people. An attacker who wants to obtain money, data or access does not always need to break a cryptographic algorithm or find a flaw in a program: it is often enough to obtain the cooperation of someone who has the authority to act. This is the core of \emph{social engineering}: the manipulation of human interactions in order to make a person perform an action that serves the attacker.
+
+The technical literature usually describes social engineering attacks through their channels (email, telephone, messaging) and through their tricks (fake identities, urgency, impersonation). This chapter adopts a complementary point of view. It asks how a request becomes something that a recipient can interpret and act upon, which relationships give it weight, and which conditions made the response plausible at the time. This is the approach of sociology: to explain actions by looking at the positions of the people involved, the expectations they hold, the rules they follow and the situation as they understand it.
+
+The sociological perspective does not replace the technical analysis. A technical account explains the channel and the operation with precision; a sociological account explains why the operation worked on the person who received it. A complete analysis of a social engineering incident needs both, and the second is the one that makes the first useful for prevention.
+
+\begin{nota}{Organisation of the module}
+	The part of the course devoted to social engineering is evaluated through two open questions, each marked out of 10. The result contributes one quarter of the final grade of the Information Systems Security course. In an answer, naming a concept is not sufficient: one has to explain what the concept makes visible in the case under discussion, and which details of the case support the explanation. A different interpretation of a case is acceptable, provided it is defended from the available evidence.
+\end{nota}
+
+\begin{nota}{A method for the reader}
+The chapter follows the order in which the concepts are needed. It starts from the request, then introduces the notion of context, the formal record used to organise an incident, the concepts of status, role and authority, the notions of expectation and social norm, and the idea of the definition of the situation. Two cases are then reconstructed using these tools. The chapter ends with the principles of influence that explain why some requests are accepted more easily than others.
+
+Each concept is introduced through an example from everyday university life before it is applied to a security case. The aim is not to memorise labels, but to be able to recognise each concept in a new situation and to use it to make an explanation more precise.
+\end{nota}
+
+
+\section{Requests and actionability}
+
+\subsection{The request as the starting point}
+A social engineering incident typically begins with a \emph{request}: someone asks another person to provide information, to arrange a payment or to allow access to a resource. A technical description can tell us a great deal about the channel used and the operation performed. It tells us much less about how the request became something the recipient could interpret and act upon.
+
+The same words can carry very different implications. A message asking for a document from a project partner, and the same message coming from the person responsible for assessing the project, are identical as text. The difference lies in the relationship between the sender and the recipient, and in what each relationship makes expected. The relationship changes what is at stake in responding, and therefore changes what a reasonable response is.
+
+\subsection{What makes a request actionable}
+A request becomes actionable when several conditions hold together. Someone must recognise the task. Someone must decide who is responsible for it. And there must be a way to proceed. Organisations have rules, practices and procedures that provide these conditions: a request may fit an established procedure, or it may invoke an exception to it. A security problem often concerns exactly this fit, and the question of who has the authority to decide what happens when people are uncertain.
+
+Consider a shared project folder. The software makes collaboration easy, but someone must still decide who can open the folder, who can change its files and who can invite other people. Now imagine a message asking to add a new person to the folder urgently. To understand the response, it is not enough to know which button was pressed. We need to know who is asking, whether this person is entitled to ask, whether there is a procedure or a colleague against which the request can be checked, and whether there is a pressure, formal or informal, to act quickly. These questions are about the organisation, not about the software, even though the software is where the action takes place.
+
+\subsection{The role of technical design}
+Technical design participates in these conditions. An interface can display an institutional identity, permit a transfer or require a particular confirmation. It can make some information immediately visible and leave other information elsewhere. But what a person does with an interface depends on the conditions under which it is used: the pressure of the moment, the expectations of the organisation and the information the person has. Understanding the behaviour of a person in front of an interface therefore requires studying the conditions of use, which is a different activity from studying the technology itself.
+
+\section{Context: the frame of an event}
+
+\subsection{Definition}
+The central concept of the sociological toolbox is \emph{context}. Context is the frame that surrounds an event, separating what belongs to the event from what lies outside it, and supplying the information needed to interpret the event. A useful image is that of a painting: the frame is not the subject of the picture, but it determines where the picture begins and ends, and it tells the viewer how to read what is inside it. In human interactions the frame is mostly symbolic. We do not touch it, but we understand it, because we have been socialised to the norms that mark the boundaries of an interaction.
+
+The idea goes back to the work of the sociologist Erving Goffman, who used the notion of frame to describe how people understand what is taking place around them. For the purposes of this chapter, a context is a set of elements that makes an event interpretable: the people involved, the channel used, the positions they hold, the earlier exchanges, the place and the timing of the interaction.
+
+\subsection{Why a frame is necessary}
+Reality is a continuous flow. No person can receive and process every piece of information present in a situation, so people simplify. They decide, often without noticing, which elements belong to the situation and which do not. A frame makes this simplification possible, and it is also what makes the simplification fallible: whatever lies outside the frame is not considered, even when it is relevant.
+
+The same logic applies to communication. The Shannon--Weaver model, one of the first technological models of communication, describes a source, a message, a channel and a receiver. In human interaction the elements are the same, but a further variable complicates them: the receiver interprets the message according to a frame, and different receivers can build different frames for the same message. This human variable is what makes social engineering possible.
+
+\subsection{Context in a simple request}
+Take the message \emph{``can you send it today?''} On its own, the sentence leaves almost everything open. What is \emph{it}? Why does \emph{today} matter? Who is asking? Normally we answer these questions automatically, through the routines of everyday life. Routines are useful because they spare us from questioning every event, but they also hide the assumptions on which we rely.
+
+Now add some context. An earlier message identifies a draft report. The sender is the person who is compiling it. A deadline explains why today matters. The words are the same, but the sentence has become interpretable, because the resources for making sense of it are now available. If the same words came instead from an unfamiliar account, with no earlier exchange, the resources would be different, and the interpretation would change with them.
+
+\subsection{Context as a tool of the attacker}
+In social engineering, the context is often built on purpose. The attacker does not simply send a request; the attacker prepares the frame in which the request will be read. The most common technique is to \emph{announce} what will happen next. If the victim has been told that a lawyer will make contact, the later call from a supposed lawyer does not look like an anomaly: it fits the frame that has already been built. The announcement makes the exchange credible and reduces the number of questions the victim is likely to ask. An attacker who avoids questions avoids the moment in which the story might be checked.
+
+Context also includes the past. A relationship built over a long time, a previous favour, an earlier instruction that was followed without problems: all of these become part of the frame. An attacker who has spent time building trust does not need to explain every request, because the frame already makes it plausible.
+
+\subsection{Solidity instead of truth}
+A question that arises naturally is what the \emph{true} meaning of an event is. In the social sciences this question is difficult to answer, and it is not necessary for the analysis. A more practical goal is to reach an interpretation that is solid, valid and reliable: solid enough to survive a stress test, valid in the sense that it accounts for the relevant evidence, and reliable in the sense that another analyst would reach the same conclusion from the same material. Context provides the metadata that guides this search. It does not give the final answer, but it tells us which elements must be considered before giving one.
+
+\section{Communicating is acting}
+
+\subsection{Words that produce facts}
+Saying and writing are forms of doing. A sentence such as \emph{``a lawyer will call''} is not only information: it creates an expectation and makes something happen. The same holds in institutional life. A judge who reads a sentence changes the legal situation of a person; a degree certificate is a document made of communication, and yet it has concrete effects on a career. Communication has consequences because people have learned to treat certain communications as binding.
+
+These consequences depend on social norms. A teacher's request to stop an activity is effective not because of the teacher's personal power, but because of norms that apply to students and teachers alike. Norms are the shared rules that tell people what they should do in particular circumstances. They are part of the frame: they let us recognise which communications require a response, and which can be ignored.
+
+\subsection{The temperature of a message}
+Beyond its content, every message has a dimension that is harder to measure: its \emph{temperature}. The temperature includes the degree of confidentiality, closeness and emotional tone that comes with the words. The phrase \emph{``keep it under your hat''} carries a meaning that the words alone do not express. The same expression can be a joke among friends and an insult in a formal meeting, or even something more serious, depending on the frame.
+
+In social engineering, the temperature of a message is often used to reduce questions. A request marked as confidential asks the recipient not to share it, and this request is itself a reason not to consult colleagues, who might otherwise have asked the questions that would expose the attack. The confidentiality of the request is therefore part of its function, and it deserves attention in the analysis.
+
+\section{The formal record: $R = (q, C, a)$}
+
+\subsection{From narrative to record}
+An incident is a sequence of many communications and decisions. To analyse it, the chapter adopts a method inspired by the investigations of transport accidents carried out by the National Transportation Safety Board in the United States. The first step of that method is to formalise the process into simple, discrete elements, so that each element can be examined, questioned and, if necessary, rejected. Here the elements are \emph{records}, one for each request and the decision it produced:
+\[
+R = (q,\ C,\ a)
+\]
+
+\begin{description}
+	\item[$q$ (request or query).] What is being asked. Confirming a contact, preparing an operation, supplying information and executing a transfer are different requests, and they must not be treated as interchangeable. The action explained later must match the request.
+	\item[$C$ (context).] The elements that were available to the recipient at the moment of the decision, seen from the recipient's perspective. $C$ is the recipient's definition of the situation, not the analyst's. The analyst must be able to justify why each element is included in the context.
+	\item[$a$ (action).] The action that must be explained. A reply, a disclosure, the approval of an instruction and the execution of a payment are different actions. Each needs its own record.
+\end{description}
+
+The brackets only keep the entries distinct. The record is not a calculation: it does not assign weights to secrecy, seniority or the sound of a voice. Its purpose is to make each claim easier to inspect and each gap in the information easier to locate.
+
+\subsection{Using the record well}
+Some rules make the record useful. The first is to decide whose action is being examined and at which moment. If the analysis moves from the decision of one recipient to the decision of another person, a second record is needed; mixing them produces confusion. The second rule is not to merge the micro-events of different decision-makers into a single record, because this removes the analytical advantage of the method.
+
+The third rule is the most important. Information obtained later must not be placed in the context of an earlier decision. If an investigation discovers that a mailbox had been compromised, this fact belongs to the reconstruction of the incident, but it was not available to the recipient before the decision. Putting it in the recipient's context would attribute to the recipient a knowledge that the recipient did not have. The analyst's knowledge at a later time must not be transferred to the actors at an earlier time.
+
+Finally, each entry should be accompanied by a short note stating where it comes from: whether it is a fact taken from a source, an interpretation, or a conjecture that still needs evidence. At the beginning of an analysis most entries will carry question marks. That is normal. The record makes these gaps visible, and the list of gaps becomes the agenda of the investigation.
+
+\section{Reconstructing an incident}
+
+\subsection{Reported events and explanations}
+A reported event is not an explanation. Suppose a source says that a lawyer was announced, and that a caller later used the identity of that lawyer. The sequence can be reconstructed. If we then add that the announcement helped the recipient accept the call, we have proposed a connection that needs support. This is a legitimate move, because explaining means proposing connections, but it must be recognised as an interpretation. The ability to distinguish facts from interpretations is the first skill that the analysis of social engineering requires.
+
+\subsection{Sources and their position}
+Sources give different kinds of access. A news report may quote an investigator. A government account may report a technical agency's finding. A company may describe its own response in a public statement. Each source is situated: it occupies a precise place in a network of needs, knowledge, capabilities, willingness to say or to avoid saying, and interests. A company involved in an incident is willing to help the authorities and to compensate its customers, and it is also concerned with its reputation. This does not mean that the company is lying, but it means that its account must be read with its position in mind. The analyst should keep the attribution of each statement, especially when the statement concerns something that the analyst has not examined directly.
+
+Information that reaches the analyst through a second-hand channel needs specific questions. What was the exact wording of the request? Is there a record of the check that was performed? Who approved the action, and what did that person know? Such questions turn a vague doubt into a request for evidence that can be obtained or that is known to be missing.
+
+\subsection{Explanations are provisional}
+Investigations of real incidents take months, sometimes years, because things take time to be understood and connections must be solid before a conclusion can be justified. The same holds for the analysis of a social engineering case. An explanation is a hypothesis that becomes stronger as it survives the evidence. It is not improved by forcing every uncertainty into a confident conclusion simply to reach an end. A good analysis makes its limits visible, and says which evidence would be needed to go further.
+
+\section{Status, role and authority}
+
+\subsection{Status and role}
+Two concepts describe the position of a person in a social structure.
+\begin{itemize}
+	\item \textbf{Status} is the rank of a person in a social hierarchy.
+	\item \textbf{Role} is the behaviour expected of a person who holds a certain status.
+\end{itemize}
+
+A position is a point in a network of responsibilities and expectations. The behaviour expected of its holder is a different matter, and neither tells us what the person actually did. People can hold a position and fail to meet the expectations attached to it. People can also disagree about what a position requires in a particular situation. This is one reason why many positions are codified in rules and job descriptions: to reduce the gaps in understanding between the people involved.
+
+In a case of social engineering, the relevant position is usually the one the sender claims, and the question is what that position makes relevant for the recipient. A group chief executive is not important in an abstract sense; the position matters because it is invoked in relation to a subsidiary and to a specific operation. The concept of role helps to specify the relationship that must be investigated. It does not explain by itself why the recipient complied.
+
+\subsection{Authority}
+\textbf{Authority} is the tendency to defer to people whom we take to be knowledgeable or entitled to direct us. Authority is linked to status and roles: the higher the role, the stronger the tendency to defer to it. It is tempting to use the word ``authority'' as a complete explanation, but the word covers different relationships that must be kept apart:
+\begin{itemize}
+	\item a person may be senior without having expertise in the matter;
+	\item a person may have expertise without being authorised to give a particular instruction;
+	\item a person may be entitled to communicate an instruction on behalf of someone else.
+\end{itemize}
+When an explanation uses the word authority, the analyst should ask which of these relationships is meant.
+
+A useful way to think about authority is as potential energy. The status attached to a role is the height from which the potential starts, and it is higher for a senior role than for a junior one. When a person communicates an order or a request, the potential becomes kinetic. For this reason an attacker has an interest in presenting itself in the highest role that is plausible for the request, because the higher the role, the more energy is available to make the request effective.
+
+\subsection{Claimed, actual and attributed positions}
+Three positions must be kept separate when an incident is analysed.
+\begin{description}
+	\item[Claimed position:] the position the sender presents, for example ``group chief executive''.
+	\item[Actual position:] the position the reconstruction establishes for the sender. In a fraud, the actual position is often different from the claimed one, and this is known only after the incident.
+	\item[Attributed position:] the position the recipient took the sender to hold at the time of the decision. This must be investigated, not assumed.
+\end{description}
+
+It is tempting to jump from the claim to the attribution: the message said ``chief executive'', the operation went ahead, so the recipient must have believed the claim. This may be a reasonable hypothesis, but the action alone does not tell us how the recipient understood the message. The recipient may have recognised the position, may have checked with someone else, or may have had another reason to proceed.
+
+An authentic identity does not settle the question either. A genuine equipment coordinator may send a request that does not belong to their responsibilities. The analysis must therefore keep three questions apart: what did the sender claim, what does the reconstruction establish, and what did the recipient understand. Each of these questions needs different evidence.
+
+\section{Expectations and social norms}
+
+\subsection{Empirical and normative expectations}
+An \emph{expectation} is a belief about what other people will do or think. Two kinds must be distinguished.
+\begin{description}
+	\item[Empirical expectation.] A belief about what relevant others actually do. If messages in a group are usually answered on the same day, a member may expect a reply on the same day.
+	\item[Normative expectation.] A belief about what relevant others think ought to be done. It is a belief about beliefs, not simply one's own opinion about the right action. The member may believe that the others consider a same-day reply part of being a reliable participant.
+\end{description}
+
+These beliefs can come apart. People may often reply late while still saying that everyone should reply promptly. And a person may judge a next-morning reply to be perfectly reasonable, while believing that the other members would regard it as too late. The normative expectation concerns the second belief: what the person thinks the standard is.
+
+An expectation is not a command that automatically produces behaviour. A person can understand what others expect and act otherwise, and can also be unsure which expectation applies. The concept therefore asks a question about the relationship, and does not give the answer. In the analysis, each expectation should be specified: who holds it, which relevant others it refers to, which situation is treated as comparable, which behaviour is expected, and what evidence shows that the expectation entered the decision. A phrase such as ``the person expected disapproval'' is too generic until we know from whom the disapproval would come.
+
+Predicting an event is not, by itself, an expectation about compliance. Predicting that a lawyer will call is first of all a linguistic act, and the expectation must be connected to the object it concerns.
+
+\subsection{Social norms}
+A \emph{social norm} is a prescription: it says which conduct is appropriate, or forbidden, in particular circumstances. Norms are the rules through which a society guides the behaviour of its members and makes it more predictable. Predictability is not certainty. Someone may decide not to follow a norm, and in doing so may betray the expectations of others. But the function of the norm is to reduce the uncertainty of behaviour.
+
+Three properties of norms are important for the analysis.
+\begin{itemize}
+	\item Norms are \textbf{cultural}: they are built by people interacting with one another. They are not a fixed feature of the world, and they do not come from outside human society.
+	\item Norms are \textbf{situated}: they belong to a particular place and period, and they change across countries, groups and time.
+	\item Norms both \textbf{prescribe} and \textbf{proscribe}: they tell people what they should do, and what they should not do.
+\end{itemize}
+
+\subsection{Separating norms from observed behaviour}
+A norm is not proved by observing a behaviour, and the absence of a behaviour does not prove that no norm applies. Suppose a group agrees to share a draft early enough for review, and drafts regularly arrive at the last moment. This shows that the deadline was not respected. It does not show that the expectation of review time has disappeared. If members complain or apologise, the norm is still active even though it is breached. If everyone treats the deadline as flexible, then there may be no shared norm at all. The behaviour and the prescription therefore need separate evidence.
+
+Without this separation, an analysis falls into a circle: one observes a result, imagines a norm that would produce it, and then uses that norm to explain the result. A written rule is evidence of a stated requirement, but explaining an action also requires knowing whether the person had access to the rule, understood that it applied, and could recall it at the relevant moment. The absence of a rulebook does not prove that no relevant expectations existed.
+
+The word \emph{culture} requires particular care. It is easy to write that ``the culture made them act this way''. Such a sentence is useful only if it says by whom which conduct was expected, and what evidence shows that the expectation mattered in the case. Otherwise the word becomes a shortcut that hides the relationships we are trying to understand.
+
+\section{The definition of the situation}
+
+To recognise which expectations apply, people need to understand what is happening. Sociologists call this the \emph{definition of the situation}. Most of the time it happens automatically. A request for a document is immediately understood as part of project coordination. A meeting announced by a colleague is understood as routine feedback. These definitions feel natural because we have used them many times, and they make everyday life possible.
+
+Goffman studied how the conduct of the participants influences the understanding of what is taking place. The same situation can be defined in different ways, and the definition changes which conduct becomes relevant. Consider a university meeting described as routine feedback on a project. You prepare an account of your progress in an informal way. Then you learn, from an official source, that the meeting is in fact a formal assessment, and there is no time to change your preparation. The invitation may use the same words and the activity may be the same, but the situation is now defined differently, and different questions become relevant: what will happen, is this way of presenting appropriate, what will I be asked?
+
+The definition of the situation is essential in the analysis of social engineering. An attacker presents an activity to the victim, for example a confidential business operation. The documents, the calls and the messages can then be read as contributions to that activity. The analyst, however, knows the actual situation, which is a fraud. The two definitions must be kept separate. The analyst must avoid writing the analyst's own interpretation into the head of the recipient. The question is not only whether the person should have known the truth, but whether the truth was knowable at the time, given the situation as it was defined for the person.
+
+The definition of the situation also helps to connect contacts across time. A first message announces a person who deals with the legal side of a transaction. A later call presents someone as that person. Documents then appear within the same proposed operation. Each element contributes to defining the situation, and together they make the situation credible for the victim.
+
+\section{Case A: the confidential acquisition}
+
+\begin{casehistory}{Case A (banking group subsidiary)}
+	A message arrives on the phone of the chair of a banking group's subsidiary, from a number that the chair does not know. The sender says that they are the chief executive of the group. The message asks the subsidiary to carry out a confidential acquisition abroad. The parent company, the message explains, cannot handle the operation directly, because a leak could jeopardise the deal. The message announces that a lawyer will make contact. The lawyer then calls, presenting themselves as a lawyer from a recognised firm. The chair receives a confidentiality agreement, an apparent power of attorney and payment instructions with bank details. A separate caller, presenting as the chief executive of the subsidiary, reaches the person responsible for treasury and payments, and asks for urgent confidential transfers. Money is transferred to accounts abroad. The fraud is detected soon after, and some of the funds are blocked or recovered, but a significant part is still missing.
+\end{casehistory}
+
+The analysis of Case A starts with the positions. The sender claims to be the group chief executive, and the recipient is the chair of a subsidiary. Both positions matter, and both must appear in the record. The new number is an obvious warning only with hindsight: at the moment the message arrives, what the analyst knows is the relationship that the sender claims and the task the message presents as part of that relationship. The message presents a communication from the top of the group to someone with a position inside it, and it asks for an operation that the subsidiary is supposed to carry out.
+
+The confidentiality of the operation has a specific function. It explains why the parent company cannot act directly, and why the request must not be discussed with colleagues. The announcement of a lawyer then prepares a place for the later call. When the call arrives, it does not look like an anomaly, because the frame has already anticipated it. The sequence of the messages therefore gives a concrete hypothesis: the earlier announcement may have made the call read as part of the same operation.
+
+The documents perform three different functions. The confidentiality agreement concerns secrecy. The apparent power of attorney provides a basis for acting on someone else's behalf. The payment instructions are a command, because they specify where the money must go. Together they give the operation a concrete form. The presence of a document, however, does not establish that it is valid, and a payment instruction is not the same as a completed transfer. These distinctions must be kept when the sequence is reconstructed.
+
+Finally, the chair and the person in treasury received different contacts, and they did not necessarily know the same things about the operation. The analysis should therefore not treat the contacts as independent confirmations of one another, just because there were several of them. Attacks conducted through communication usually use many messages over time to make the story appear more realistic, and several contacts can all belong to the same deception.
+
+\subsection{Exercise on Case A}
+A useful exercise is to choose, in a pair, the single sentence of the case that would best explain the incident with the sociological concepts, rather than with technical details. Comparing the sentences chosen by different students shows a common feature: the sentences concern the context and the roles, and not the technology. This is the first step of the analysis, because it identifies the relationship that must be explained.
+
+\subsection{Variations on Case A}
+A powerful way to test an explanation is to change one element of the case and observe whether the explanation changes with it. If the request came from a junior employee instead of the group chief executive, what would have to change in the explanation? The interesting point is not to predict whether the recipient would refuse, but to identify the relationship on which the explanation depends. The same test applies to a request coming from a union representative, urging the subsidiary to act quickly. In both variations, the response depends on the perceived role of the sender and on the legitimacy of the request. A junior employee does not make every message illegitimate, and a senior person does not make every request legitimate. Making the dependence explicit is the purpose of the variation.
+
+\section{Case B: the institutional mailbox}
+
+\begin{casehistory}{Case B (institutional mailbox)}
+	A government's national cyber security agency analysed a sample email supplied by a company, and established that an institutional mailbox had been compromised. An unauthorised party used this genuine institutional channel to send fraudulent requests for customer information. The company complied. It stated that its own systems and customer funds were not affected, but the incident involved the disclosure of customer information. The company then offered assistance to the affected customers, including cover for the cost of replacing identity documents where needed. A data-protection authority asked banks to check for similar communications, as a precautionary measure. Later reporting includes official criticism of the verification procedure that the company applied to the request.
+\end{casehistory}
+
+Case B is useful because the channel is different. In Case A, the sender used a message and a phone call. In Case B, the channel is an institutional email that is genuine. This makes it necessary to examine two things separately: the authenticity of the channel and the legitimacy of the request. The channel was not fake, so there is no forged evidence to rely on. The question moves from ``is this email real?'' to ``could a request of this kind come from this office, and was the request checked in the appropriate way?''
+
+Two points about time are important. The compromise of the mailbox is a finding reported after the incident. It helps us reconstruct what happened, but it does not show what the recipient knew before disclosing the information. The analysis must keep apart the information available after the discovery of the incident and the position of the actors while the incident was unfolding.
+
+The company's statement that its systems and funds were unaffected is accurate as far as it goes, but it concerns systems and money. The disclosure of customer information is a different kind of consequence, and it must remain in the account. The criticism that followed concerns the verification procedure, not only technical gaps. An institution entitled to ask for data creates a duty to comply, and speed is part of that duty. But a request still needs a second check: is the sender entitled to make this specific request, and does it come from the office that normally handles such requests? Hindsight makes these questions easy; the analysis must ask whether they were answerable at the time.
+
+\section{Influence: why some requests are accepted}
+
+Social engineering works because people follow patterns of influence that are shared by almost all human beings. The psychologist Robert Cialdini described seven principles of influence, studied in psychology, social psychology, consumer behaviour, diplomacy and marketing. These contexts share many elements with social interaction in general, so their findings can be adapted to the analysis of social engineering. This section introduces four of the principles: reciprocity, commitment and consistency, social proof and authority. The principles are not a checklist of attacks. They are patterns that help to explain why a request was accepted.
+
+\subsection{Reciprocity}
+Reciprocity is the rule that obliges us to repay what another person has given us. It is one of the most widespread social norms. It requires no written contract, and it appears in every culture, in different forms. Its great power is that it binds people without force: they feel obliged, not threatened.
+
+Consider a classmate who spends an evening helping you to recover a broken project. The following week, the same classmate asks you to swap presentation slots. The earlier favour creates an expectation of repayment, even though nothing was agreed in writing. The request is not a threat, but it is made possible by the earlier exchange.
+
+Reciprocity can also be turned into pressure. A past secret, a favour that was never returned, or a debt that was never discussed can be used to force cooperation: \emph{``I kept that secret, and now I need your help.''} In such a case, the question for the analysis is what the earlier favour contributes to the new request. Receiving help does not give anyone permission to carry out a riskier action.
+
+\subsection{Commitment and consistency}
+People want to act in ways that are consistent with what they have already said or done. Once someone has accepted a commitment, and a role has been attached to it, new duties that are consistent with the first one feel obligatory. The commitment creates a frame in which the new request appears to follow naturally.
+
+Consider a student who volunteers to organise the final submission of a group project. Later, the same student is asked to take on another coordination task on the same project, even though their own section is not finished. The first commitment makes the second request feel consistent with it, and refusing it feels like a break with what was already accepted.
+
+This principle is important in long relationships of trust. An attacker who obtains small favours or small commitments over a long period can use the accumulated consistency to make a much larger request appear coherent with what has already happened. The earlier relationship is not a neutral background: it is part of the context that makes the later request plausible.
+
+\subsection{Social proof}
+People often decide what to do by observing the choices of others whose judgement they respect. Suppose you are choosing an optional workshop on a subject you do not know well, and several students whose judgement you trust have already enrolled. The inference is simple: they chose it, so they probably know more about it than I do. This is social proof. It is a shortcut that often works, because the choices of others carry real information, but it can also be exploited.
+
+Whose choices count as evidence, and why? The question is useful in the analysis of an incident, because it asks which people the recipient was observing. A colleague who has already complied, a senior person who has already approved a similar request, or a group of peers who have followed an instruction: each of these can make the recipient more inclined to comply.
+
+\subsection{Authority}
+Authority is, as seen above, the tendency to defer to people whom we take to be knowledgeable or entitled to direct us. The principle of authority is linked to norms, expectations and roles: the higher the role, the stronger the principle. This explains why attackers often present themselves as the most senior person who could plausibly make the request.
+
+Authority is also communicated through symbols. A classic demonstration in social psychology shows that the same request, made in the same environment, obtains different levels of compliance depending on the appearance of the person who makes it. What changes is not the content of the request, but the signals of the role. Dress, environment and the way a person presents themselves are ways of communicating authority, and they shape the first impression on which the rest of the interaction depends. Attackers exploit this: they dress, speak and present themselves in the way that a more authoritative role would, because they know that the principle of authority operates on these signals.
+
+The practical lesson is that authority is not a property of the person alone. It is a property of the relationship between the person, the role they claim and the context in which the request is made. A good analysis therefore asks which role is being invoked, which signals support it, and whether the request belongs to that role.
+
+\section{Summary}
+
+The sociological toolbox developed in this chapter can be summarised in the following concepts.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{p{0.28\textwidth} p{0.64\textwidth}}
+		\toprule
+		\textbf{Concept}                  & \textbf{Use in the analysis}                                                              \\
+		\midrule
+		Request ($q$)                     & What is being asked. Different requests are not interchangeable.                          \\
+		Context ($C$)                     & What the recipient had available, seen from the recipient's perspective.                  \\
+		Action ($a$)                      & The specific action to explain: reply, disclosure, approval or payment.                   \\
+		Record $R = (q, C, a)$            & One record per decision; connected records for the whole incident.                        \\
+		Definition of the situation       & The activity that the participants understand to be taking place.                         \\
+		Status and role                   & The rank in a hierarchy and the conduct expected from that rank.                          \\
+		Authority                         & The tendency to defer to those taken to be knowledgeable or entitled to direct us.        \\
+		Claimed, actual, attributed       & The position presented, the position established afterwards, the position assumed by the recipient. \\
+		Empirical and normative expectation & What relevant others do, and what one believes they think ought to be done.            \\
+		Social norm                       & A cultural and situated prescription of appropriate conduct.                              \\
+		Reciprocity                       & The obligation to repay what others have given.                                           \\
+		Commitment and consistency        & The pressure to act consistently with earlier commitments.                                \\
+		Social proof                      & The inference drawn from the choices of people whose judgement we respect.                \\
+		Temperature of a message          & The confidentiality, closeness and tone that shape its interpretation.                    \\
+		\bottomrule
+	\end{tabular}
+	\caption{Concepts of the sociological toolbox for social engineering.}
+	\label{tab:se-concepts}
+\end{table}
+
+The method follows a simple sequence. First, identify the requests and the records they generate. Second, for each record, reconstruct the context available to the recipient at the time. Third, identify the positions, roles and expectations that give the request its weight. Fourth, check which parts of the explanation are supported by evidence, and which are conjectures. Finally, make the limits of the explanation visible, and say which information would be needed to go further. A good analysis does not claim to know everything; it shows clearly what it knows, what it infers and what it still has to establish.
