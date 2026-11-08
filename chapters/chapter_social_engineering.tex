@@ -8,14 +8,16 @@ The technical literature usually describes social engineering attacks through th
 
 The sociological perspective does not replace the technical analysis. A technical account explains the channel and the operation with precision; a sociological account explains why the operation worked on the person who received it. A complete analysis of a social engineering incident needs both, and the second is the one that makes the first useful for prevention.
 
+The aim is a better interpretation of an incident than the ones produced by stereotypes, prejudice, common sense or ignorance. Disagreements about what someone said are common. A person may deny having made a statement and claim that the story was invented, with no witnesses to confirm it, and a single word is rarely enough to settle the matter.
+
 \begin{nota}{Organisation of the module}
 	The part of the course devoted to social engineering is evaluated through two open questions, each marked out of 10. The result contributes one quarter of the final grade of the Information Systems Security course. In an answer, naming a concept is not sufficient: one has to explain what the concept makes visible in the case under discussion, and which details of the case support the explanation. A different interpretation of a case is acceptable, provided it is defended from the available evidence.
 \end{nota}
 
 \begin{nota}{A method for the reader}
-The chapter follows the order in which the concepts are needed. It starts from the request, then introduces the notion of context, the formal record used to organise an incident, the concepts of status, role and authority, the notions of expectation and social norm, and the idea of the definition of the situation. Two cases are then reconstructed using these tools. The chapter ends with the principles of influence that explain why some requests are accepted more easily than others.
-
-Each concept is introduced through an example from everyday university life before it is applied to a security case. The aim is not to memorise labels, but to be able to recognise each concept in a new situation and to use it to make an explanation more precise.
+	The chapter follows the order in which the concepts are needed. It starts from the request, then introduces the notion of context, the formal record used to organise an incident, the concepts of status, role and authority, the notions of expectation and social norm, and the idea of the definition of the situation. Two cases are then reconstructed using these tools. The chapter ends with the principles of influence that explain why some requests are accepted more easily than others.
+	
+	Each concept is introduced through an example from everyday university life before it is applied to a security case. The aim is not to memorise labels, but to be able to recognise each concept in a new situation and to use it to make an explanation more precise.
 \end{nota}
 
 
@@ -35,7 +37,7 @@ Game theory helps here. In Case A the sum is zero: money taken from one account 
 \subsection{Social engineering}
 Wang, Sun and Zhu (2020) define social engineering in cybersecurity as a type of attack in which the attacker or attackers exploit human vulnerabilities through social interaction in order to breach cybersecurity. Social engineering is therefore a subset of the issues studied in cybersecurity. What distinguishes it is the human variable: it exploits human vulnerabilities, or some characteristics of human and social interaction, rather than a technical flaw alone.
 
-The term was not born in cybersecurity. Its economic and political-social uses came first, and the historical background, which includes phone phreaking, is a useful complement to the definition. It is worth knowing in one's own words.
+The term was not born in cybersecurity. Its economic and political-social uses came first, and the history of the origin of these attacks is treated as a separate part of the material. It is a story rather than a technical argument, and it should be known in one's own words rather than learned by heart.
 
 \section{Requests and actionability}
 
@@ -112,7 +114,18 @@ The third rule is the most important. Information obtained later must not be pla
 
 Finally, each entry should be accompanied by a short note stating where it comes from: whether it is a fact taken from a source, an interpretation, or a conjecture that still needs evidence. At the beginning of an analysis most entries will carry question marks. That is normal. The record makes these gaps visible, and the list of gaps becomes the agenda of the investigation.
 
+It is tempting to try to list in advance every concrete item that could be observed in a social engineering incident. The attempt is unfruitful: the list would be as long as the distance between the Earth and the Moon and back, and it would change as technologies change. A better approach is to reason about the elements through the concepts of this chapter, and to review the analysis periodically, month after month.
+
 \section{Reconstructing an incident}
+
+\subsection{Three stages of the method}
+The method used in this chapter follows three stages, adapted from the headings that the NTSB uses in transport accident investigations. The first stage is fact-gathering: the reconstruction of the available account, as complete and reliable as possible. The second stage is the analysis of findings: the development and testing of an explanation that connects the facts through the concepts introduced in this chapter. The third stage concerns recommendations, which are not addressed before an explanation exists.
+
+In practice the work proceeds in levels. A first level gives the basis of an explanation from the reading of the case; each following level adds concepts, evidence and a more detailed analysis, until the concepts of the module are used together on the same case. The case itself does not change between levels: what changes is the depth of the reading.
+
+The stages are not strictly sequential. An analyst begins with a first impression of the incident, gathers information, places it on a board and tries to connect the pieces. The connections usually raise new questions, and those questions send the analyst back to the facts. Each round changes the analyst's gaze on the same material: the scene does not change, but with more knowledge it is seen with different eyes, and the explanation becomes more precise or is replaced.
+
+It is useful to keep a starting explanation: a short account, written from the first reading, of why an action may have taken place. This account is not discarded when the analysis develops. It is kept as the first version of the reconstruction and revised in the light of the analysis, so that the change in understanding can be seen.
 
 \subsection{Reported events and explanations}
 A reported event is not an explanation. Suppose a source says that a lawyer was announced, and that a caller later used the identity of that lawyer. The sequence can be reconstructed. If we then add that the announcement helped the recipient accept the call, we have proposed a connection that needs support. This is a legitimate move, because explaining means proposing connections, but it must be recognised as an interpretation. The ability to distinguish facts from interpretations is the first skill that the analysis of social engineering requires.
@@ -124,6 +137,22 @@ Information that reaches the analyst through a second-hand channel needs specifi
 
 \subsection{Explanations are provisional}
 Investigations of real incidents take months, sometimes years, because things take time to be understood and connections must be solid before a conclusion can be justified. The same holds for the analysis of a social engineering case. An explanation is a hypothesis that becomes stronger as it survives the evidence. It is not improved by forcing every uncertainty into a confident conclusion simply to reach an end. A good analysis makes its limits visible, and says which evidence would be needed to go further.
+
+\subsection{A story that does not need to justify itself}
+A story that does not need to justify itself is a fairy tale. An evidence-based reconstruction is different: it separates facts and evidence clearly from interpretations and conjectures, so that each claim can be checked against its source. The distinction is simple to state and difficult to keep, because interpretations tend to enter a narrative without being marked as such.
+
+\subsection{Question marks are part of the model}
+At the beginning of an analysis most questions remain open, and some will probably remain open at the end. The question marks are therefore not a failure to be removed as quickly as possible; they are part of the model, because they show what the analysis does not yet know. The gap between the reconstruction that the account allows and the evidence the account actually provides is a guide to further work: which document to request, which person to interview, which record to check, and which hypothesis would change if the answer were different.
+
+\begin{nota}{Notes}
+	For example, the disappearance of flight MH370 remained only partly explained for years. The investigation produced partial answers and conjectures, and it paused when the effort no longer produced new evidence. It restarted when a new element appeared, such as debris reaching a shore. The same pattern applies to old crimes that are reopened when new techniques, such as DNA analysis, become available.
+\end{nota}
+
+\subsection{Investigations end, and restart}
+An investigation has no fixed end. It may stall, when effort, money or new tools no longer produce evidence, and it may restart when a new element appears, or when social or political pressure asks the authorities not to give up. A satisfactory solution and a stall are two possible end points, and in both cases the analysis can start again. For this reason a conclusion should always state what would reopen it.
+
+\subsection{Recommendations come last}
+Public narratives of incidents often reverse this order. Media need a clear story quickly, and they ask for explanations and recommendations before the facts are established. The method proposed here asks for the opposite: first the reconstruction, then the explanation, and only then any recommendation, which must be linked to what the analysis has actually established. Partial recommendations and partial explanations are legitimate outcomes, because a new incident may always happen before the analysis is complete.
 
 \section{Status, role and authority}
 
@@ -206,7 +235,7 @@ The definition of the situation also helps to connect contacts across time. A fi
 \section{Case A: the confidential acquisition}
 
 \begin{casehistory}{Case A (banking group subsidiary)}
-	A message arrives on the phone of the chief executive of a banking group's subsidiary, from a number that they do not know. The sender says that they are the chief executive of the group. The message asks the subsidiary to carry out a confidential acquisition abroad. The parent company, the message explains, cannot handle the operation directly, because a leak could jeopardise the deal. The message announces that a lawyer will make contact. The lawyer then calls, presenting themselves as a lawyer from a recognised firm. The subsidiary's chief executive receives a confidentiality agreement, an apparent power of attorney and payment instructions with bank details. A separate caller, presenting as the chief executive of the subsidiary, reaches the person responsible for treasury and payments, and asks for urgent confidential transfers. Money is transferred to accounts abroad. The fraud is detected soon after, and some of the funds are blocked or recovered, but a significant part is still missing.
+	A message arrives on the phone of the chief executive of a banking group's subsidiary, from a number that they do not know. The sender says that they are the chief executive of the group. The message asks the subsidiary to carry out a confidential acquisition abroad. The parent company, the message explains, cannot handle the operation directly, because a leak could jeopardise the deal. The message announces that a lawyer will make contact. The lawyer then calls, presenting themselves as a lawyer from a recognised firm, and the voice on the call is reported to have been imitated with artificial intelligence. The subsidiary's chief executive receives a confidentiality agreement, an apparent power of attorney and payment instructions with bank details. A separate caller, presenting as the chief executive of the subsidiary, reaches the person responsible for treasury and payments, and asks for urgent confidential transfers. Money is transferred to accounts abroad. The fraud is detected soon after, and some of the funds are blocked or recovered, but a significant part is still missing.
 \end{casehistory}
 
 The analysis of Case A starts with the positions. The sender claims to be the group chief executive, and the recipient is the chief executive of a subsidiary. Both positions matter, and both must appear in the record. The new number is an obvious warning only with hindsight: at the moment the message arrives, what the analyst knows is the relationship that the sender claims and the task the message presents as part of that relationship. The message presents a communication from the top of the group to someone with a position inside it, and it asks for an operation that the subsidiary is supposed to carry out.
@@ -281,9 +310,135 @@ Discounts are not necessarily fake; creating special moments can be part of a bu
 For the analysis, three elements must be kept apart: the stated purpose, the actor's intention, and the outcome. In Case A the subsidiary's chief executive acted genuinely, believing the operation was an acquisition. The teleological replacement was so effective that the attacker's goal became the victim's own, and the result was a diversion. The replacement may be unconscious: the victim may recognise the risk only later, when it is too late.
 
 \section{Recordings and the epistemic backstop}
+The word \emph{epistemic} comes from the Greek \emph{episteme}, knowledge, and refers to the way we produce, share and deem knowledge reliable.
+
 Disputes about what was said or done were historically settled first by power, then by debate. The word ``technocracy'' itself comes from \emph{kratos}, power: in ancient times kings and tyrants declared what was just and true. In the modern judicial system a prosecutor and a defence argue before a judge or a jury, who weigh the evidence. This structure was designed to limit the abuse of power, even though it can make mistakes. In late modernity recordings, videos, sounds and voices became concrete proof, and seeing or hearing came to be treated as believing.
 
-Rini (2020) calls such recordings an \emph{epistemic backstop}: video and audio recordings regulate our testimonial practices, sometimes bluntly and often subtly. The backstop works even before a dispute, because the possibility of a recording constrains what people are willing to say. A question structures the rest of the analysis: when someone says ``that is not what I said'' and another replies ``there is a recording'', what work do we expect the recording to do? The question is left open here and returns when the chapter examines contested evidence.
+Rini (2020) calls such recordings an \emph{epistemic backstop}: video and audio recordings regulate our testimonial practices, sometimes bluntly and often subtly. The backstop works even before a dispute, because the possibility of a recording constrains what people are willing to say. A question structures the rest of the analysis: when someone says ``that is not what I said'' and another replies ``there is a recording'', what work do we expect the recording to do? The question returns in the section on contested evidence.
+
+\subsection{From speech to recording}
+The history of evidence explains why recordings carry so much weight. The Latin saying \emph{verba volant, scripta manent} expresses the difference: speech flies away, while writing survives the writer and can be moved, shown and checked. A written text can still be denied, but if someone shows that the handwriting is the author's, or that a reliable person took notes of the words, the evidence becomes stronger. Modernity moved from writing to printing, from printing to industrial printing, and then to the recording of voices and images. Over roughly the last two hundred years, video and audio have worked as a backstop: a pillar in the process of establishing what was true and what could be proved.
+
+\subsection{Knowledge we do not check ourselves}
+Most of what a person knows is never checked personally. We trust institutions, such as constitutions, the selection processes of teachers and police, and a long chain of knowledge accumulated over generations, and few of us can inspect the evidence behind that chain. The same holds for science. Physics today is neither Newton's nor Aristotle's: many thinkers, in theory and in experiment, took part in building it. Aristotle is still regarded as one of the most relevant philosophers of Western culture, although his ideas are thousands of years old. Many of the ideas we rely on are taken for granted, although we could explain only a few of them in detail. This is the normal condition of knowledge in a complex society, and it is why evidence that others can check has so much value.
+
+\subsection{The backstop as deterrent}
+Multimedia data work as epistemic backstops in several ways. The first is deterrence: recordings work even before any dispute starts. Cameras, phones, GPS devices, and tickets that log a journey on a train or a bus are everywhere. If people know that what they say or do is recorded, they assume it will be visible and may be taken as the truth, and this changes their behaviour.
+
+\begin{nota}{Notes}
+	For example, a taxi driver may install a camera from the first day of work, because accidents and harassment have happened in that job. The camera protects the driver if something goes wrong, and it discourages people who intend to behave badly.
+\end{nota}
+
+The effect works like an insurance. It protects in case something happens, and it influences others, who are less inclined to act when the protection is in place.
+
+\subsection{The regulatory function}
+A second function concerns oral disputes. Without a recording, a dispute can last for days or months: ``No, I never said that'', ``Yes, you did'', ``You misunderstood me''. When one party knows that a recording exists, the dispute often ends, even though nobody watches or listens to it. Many people accept the existence of the recording as proof without checking any element of it. In sociological terms this is a \emph{regulatory function}: the existence of something affects the behaviour of the actors, even when it is never consulted.
+
+The function also shapes how events are understood afterwards.
+
+\begin{nota}{Notes}
+	For example, after the crash of a business jet in Florida, conspiracy theories appeared quickly. A conspiracy mindset does not accept evidence, so no backstop can persuade it. Still, the most widely accepted account became possible because cameras had recorded the crash. Reconstructions by people who are not used to analysing such incidents can be shaped by stereotypes: the speed of the aircraft led some to imagine a missile. The existence of several records did not stop speculation completely, but it reduced its reliability and its spread.
+\end{nota}
+
+This is the regulatory function at work: when something solid exists, it provides a reliable explanation, and it reduces disputes by relegating unsupported claims to weak versions.
+
+\subsection{A recording as corrector}
+A reconstruction may be disputed at first and then corrected by a recording, so that the account becomes reasonably difficult to dispute. It is much more probable to make a mistake by accepting the initial version than by deleting or modifying the recording to fit it.
+
+\section{Contested evidence}
+
+\subsection{Seeing is believing?}
+The idea that seeing is believing is no longer generally valid, and it is becoming less valid, because generative artificial intelligence produces increasingly realistic content. The source behind this point dates from about 2018, roughly a year after the transformer paper \emph{Attention Is All You Need} (2017), which is usually taken as the starting point of today's generative AI. Two consequences follow. An AI-enabled forgery can challenge the trust placed in video and audio. And a convincing forgery can make a genuine recording easier to deny.
+
+For some scholars, technology has two faces: it helps with many tasks and speeds up processes, but it also wears down the tools that made truth reachable at a distance.
+
+\subsection{When even genuine evidence loses weight}
+The question becomes how societies can deal with complexity and controversy when recording reality is no longer a strong proof for resolving a disagreement. The value of digital recordings is reduced for opinions and for possibilities, though not for epistemic backstops in general. A recording of a crime may soon be treated in court at the same level as testimony. Testimony is not reliable on its own; it involves many parts and needs checking. Recordings, time stamps and digital signatures were meant to resist this, but almost anything can now be fabricated, which makes it harder to tell true content from fabricated or modified content.
+
+Two risks follow for anyone investigating incidents in cyberspace. The first is that fabricated content is taken as genuine. The second is that people become so sceptical of technology that even genuine content meets suspicion. This scepticism can spread like a pandemic, and a society that cannot separate the benefits of technology from its risks becomes unable to protect itself.
+
+The new situation forces people to make choices they did not have to make before: which calls and messages from trusted people to believe, and which to block or delete.
+
+\begin{nota}{Notes}
+	For example, email and messaging phishing is increasing, so a call or message from a trusted person may now be treated with suspicion, and blocked or deleted. Children are taught not to accept anything from people they do not know. This is sensible, but it is also a sign of a society that is becoming sceptical. The image of a door helps: a person who cannot tell a good visitor from a dangerous one may keep the door closed, or open it carelessly.
+\end{nota}
+
+The wider risk concerns the shared basis of a society. If people lose the agreement on which principles and methods are acceptable for establishing, even partially and conditionally, the truth of a dispute, then a society cannot build a common explanation of what happened. Societies are always interested in controversies, and when these become too strong they can break a society: wars, economic crises, injustice, shortages of food and water, and revolutions. Historical examples include the French and Russian revolutions and the period after the first industrial revolution, when the division between ``us'' and ``them'' became central.
+
+\subsection{A shared alphabet of method}
+A recurring question is how a society can hold together if it cannot agree on the principles and methods used to decide the truth of a dispute, when the truth itself may change over time. An engineering analogy helps. A rocket cannot reach Mars if its engineers do not agree on mathematics and physics. Contesting the validity of another method is different from disagreeing about a result: the first breaks the common alphabet in which results are discussed at all, while the second can be resolved inside it.
+
+\begin{nota}{Notes}
+	For example, teachers of different courses might disagree about the state of the art, and some might invent new mathematics without empirical evidence, at least as a joke. The problem is not the shape of the spacecraft, its fuel or the skill of the crew: it is the shared alphabet.
+\end{nota}
+
+\section{Case A revisited: sources, requests and records}
+Case A can now be read with the tools developed in this chapter. Each step separates a different question, and the steps are not interchangeable.
+
+\subsection{The voice as a source}
+Recordings and digital content cannot by themselves prove the reliability of their contents. A person who does not know this becomes a victim of social engineering. In Case A, a message is followed by a call, and the voice of the person imitated is reported to be indistinguishable from the real one, in tone, register, vocabulary and inflection.
+
+The word \emph{aesthetics} is used here in a technical sense: not beauty, but the formal characteristics of a message. The aesthetics of a messaging app are its interface and its emoticons; for a voice, they are its sound and waveform. Generative artificial intelligence is reaching the level of statistical likeness to human communication that makes these characteristics convincing. When an attacker reaches that level of likeness to a genuine source, the medium stops working as an epistemic backstop, and the recipient is exposed.
+
+\subsection{A recording produced later}
+Suppose the situation of Case A continues. This is a scenario invented for teaching, not a report of what happened. After the incident, someone produces a recording as proof that the lawyer gave the instructions. The first question is where the recording comes from. Even before generative AI, multimedia content could be altered, and forensic work has long analysed digital traces to establish whether a piece of evidence is authentic.
+
+\subsection{Evidence and proposition}
+A recording must support two different claims: who spoke, and what request they made. These are entangled, but they must be separated. The \emph{evidence} is the content, the message or the digital file; the \emph{proposition} is the request. A piece of evidence $e$ may represent a proposition $p$ without $p$ being true, and contesting $e$ as fabricated does not by itself establish that $p$ is false. Having the evidence does not imply that the source is genuine, and having the proposition does not imply that the request is appropriate.
+
+In Case A, the inquiry into the source and the inquiry into the request must be kept apart. A legitimate request can come through an inappropriate channel, and a fake source can produce a true request.
+
+\subsection{Attribution and mandate}
+The starting hypothesis is that the lawyer made the request, and the next question is whether the request falls within the lawyer's mandate. One should not take for granted that, because a source is genuine, its content is also appropriate. In the reports on transport accidents studied through the NTSB method, the actors involved are, in the vast majority of cases, genuine. The problematic cases arise when someone makes requests that go beyond the mandate attached to their role.
+
+This step is boring, but it is necessary. If one does not examine every detail, a variable becomes a constant and is no longer disputed: an association that seemed a necessary premise becomes an unexamined assumption.
+
+\subsection{Keeping the actor and the moment}
+An analysis involves several variables, and each step of the reconstruction needs its own record. Every record addresses a request, a context and an action, and every record is situated in a network of people, roles, expectations, requests and actions. Each record $R_i$ concerns a particular recipient at a particular moment.
+
+\begin{nota}{Notes}
+	For example, take the request to make a money transfer. The first person who receives it is the subsidiary's chief executive. Reconstructing the chain from that person's perspective gives a record $R_1$: $q_1$ is ``make this money transfer as soon as possible''; $C_1$ is ``this is a secret acquisition, keep it under your hat, otherwise we lose the opportunity''; and $a_1$ is the subsidiary's chief executive transferring the money as instructed.
+\end{nota}
+
+When reconstructing $C_1$, the person to consider is the recipient, and the context must contain what would probably have been available to that person at the time, not the analyst's knowledge afterwards. Where the analyst is uncertain, a question mark is placed in the record.
+
+\subsection{Two recipients, different records}
+Following the chain further, a second record is needed for the person responsible for treasury and payments, who probably executed the transfer. The two records share some elements, because both people work in the same organisation, but these elements cannot simply be copied from one record to the other. The treasury officer may have different evidence to consider: for example, how long the person has been in the company, and whether the company has often changed its CFO or its chief executive, which could suggest defensive decisions aimed at doing or undoing something.
+
+\subsection{The executed transfer}
+Each action comes with its own variables. For a money transfer, the action under examination is identified by the selected recipient and the moment, because more than one transfer may have been made. The executed transfer is a function of the amount and the destination: $T(m, d)$, where $m$ is the amount and $d$ the actual destination. An instruction to transfer and an executed transfer are different things, because an instruction is not the same as a completed transfer. The action $a_i = T(m_i, d_i)$ must therefore be reconstructed from the proof of the transfer, not from the instruction.
+
+\subsection{Two hypotheses about the destination}
+The analysis of the transfer rests on two hypotheses.
+\begin{description}
+	\item[H1.] The executed transfer used the destination given in the instructions. To test it, one asks for the proof of the bank transfer and compares it with what the instructions said.
+	\item[H2.] The instructed destination belongs to the set of destinations controlled by the attack network. To test it, one relates the destination put in the message to the destinations that the attacker controls.
+\end{description}
+
+H1 matters because, in a social engineering attack, a last-minute change or a mistake may occur, so one must know whether the instructions were executed, and how. When many transactions are involved, each instruction must be followed to its own transaction. This is one reason why the investigation of complex situations can last months or years. H2 concerns the scheme itself: one must establish a link between the destination in the message and the bank account of the attacker.
+
+\subsection{From two premises to a conditional conclusion}
+If both hypotheses are supported by solid evidence, the executed transfer went to a destination that belongs to the attacker's domain, and one may conclude that the case is a social engineering attack. The result is conditional: it holds only if both premises hold, and it should not be treated as a single block. Each premise has its own evidence and its own gaps.
+
+The same method applies to Case B, where the analysis connects the institutional address with the disclosure of customer information. Each link in that connection needs its own evidence. Different people can work on different hypotheses independently; the results are then compared and integrated into a first reconstruction of what happened. The groups then return to the document they had worked on and develop their reasoning.
+
+\subsection{Purpose is not a hidden equality}
+Even if both hypotheses are proven, this says nothing about what the recipient really intended. The recipient may have been naive, or may have been a partner in the crime, but these are different questions, and the recipient's intention must be treated separately from the reconstruction of the transfer. The stated purpose (a confidential acquisition), the possible effect (resources reaching a destination controlled by the attack network) and the elements still to be established (individual intentions, the loss and the legal classification of the conduct) must be kept apart rather than merged. In particular, the amount of the loss, the gap between the perceived and the actual destination, and the possible offence are separate elements.
+
+\section{Communicating an analysis in progress}
+An analysis can be communicated while it is still in progress, and the way this is done matters. Clear language without complex jargon helps, and uncertainty is kept as the protagonist rather than hidden.
+
+\begin{nota}{Notes}
+	For example, the spokesperson of an investigation into an aviation accident, speaking at a press conference, used plain language and said ``we don't know yet''. The spokesperson refused to speculate and did not give weight to conspiracy questions from journalists. Expressions of empathy and condolence are also needed when people have died.
+\end{nota}
+
+The investigators kept their focus. They distinguished what was already known from what had to be investigated, and described what was complicated without personal judgement. The same discipline applies to a social engineering analysis. We cannot assume that the recipient had the same goals, perspective or interests as the attacker.
+
+\begin{nota}{Notes}
+	For example, in an aviation accident one should not conclude from the age of a crew member that they were negligent: age does not prove anything. A person, especially one who cannot defend themselves, should not be judged for seeming too young for a role, unless a negligent action has been proven.
+\end{nota}
+
+Refusals to answer need the same care. If someone refuses to answer, they should not be treated as a partner in the incident or as a suspect without proof. If the mandate allows the question to be asked, the law may provide a way to obtain a reply; if not, one cannot draw inferences from silence. Nor should one attach prejudices about whether someone answers, is literate or seems nervous, because one does not know how they react in the situation.
 
 \section{Influence: why some requests are accepted}
 
@@ -307,6 +462,12 @@ This principle is important in long relationships of trust. An attacker who obta
 People often decide what to do by observing the choices of others whose judgement they respect. Suppose you are choosing an optional workshop on a subject you do not know well, and several students whose judgement you trust have already enrolled. The inference is simple: they chose it, so they probably know more about it than I do. This is social proof. It is a shortcut that often works, because the choices of others carry real information, but it can also be exploited.
 
 Whose choices count as evidence, and why? The question is useful in the analysis of an incident, because it asks which people the recipient was observing. A colleague who has already complied, a senior person who has already approved a similar request, or a group of peers who have followed an instruction: each of these can make the recipient more inclined to comply.
+
+Social proof is not a guarantee. The inference can be biased, irrational or even dangerous: in a panic, people look at one another for guidance, and the collective result can be a tragedy. Even so, relying on others has a rationality of its own, because the choices of others have carried useful information for most people in most situations.
+
+We do not treat every other person as a source of social proof. We select those who count for us: relatives, partners, friends, teachers, colleagues, the people with whom we share a community or a cause, opinion leaders, public figures and politicians. The relevance of a person is dynamic and depends on the context. It can also be a stranger met at a particular moment, whose name we never learn. In the analysis, the question is therefore not whether social proof existed in general, but which relationship between the actors may have played this role, and what evidence supports that relationship.
+
+A classic study carried out in New York shows how strongly the presence of others changes behaviour. Researchers had one person, or a group of up to fifteen people, look up at a window on the sixth floor of a building, and filmed the passers-by. With one observer, about 4\% of them stopped to look as well; with fifteen observers, the share rose to around 40\%. The window and the street did not change, only the number of people who appeared to be paying attention. The lesson is not that every crowd is persuasive, but that the visible choice of many people can change what seems worth doing.
 
 \subsection{Authority}
 Authority is, as seen above, the tendency to defer to people whom we take to be knowledgeable or entitled to direct us. The principle of authority is linked to norms, expectations and roles: the higher the role, the stronger the principle. This explains why attackers often present themselves as the most senior person who could plausibly make the request.
@@ -366,37 +527,76 @@ In attacks, scarcity shortens the time available for checking. An offer that adv
 
 Scarcity also acts on time and attention. In an analysis, time is often the first resource that is missing, and routine the second: requests are confirmed on autopilot, without checking the number that was already available. Experience does not protect against this: senior people can become negligent, and attention to routine requests drops. Case A shows the same pattern: the request asked for speed and secrecy, and the subsidiary probably had no procedure for such a strange request.
 
+\clearpage
+
 \section{Summary}
 
 The sociological toolbox developed in this chapter can be summarised in the following concepts.
 
-\begin{table}[H]
+\begin{table}[htbp]
 	\centering
-	\begin{tabular}{p{0.28\textwidth} p{0.64\textwidth}}
-		\toprule
-		\textbf{Concept}                  & \textbf{Use in the analysis}                                                              \\
-		\midrule
-		Request ($q$)                     & What is being asked. Different requests are not interchangeable.                          \\
-		Context ($C$)                     & What the recipient had available, seen from the recipient's perspective.                  \\
-		Action ($a$)                      & The specific action to explain: reply, disclosure, approval or payment.                   \\
-		Record $R = (q, C, a)$            & One record per decision; connected records for the whole incident.                        \\
-		Definition of the situation       & The activity that the participants understand to be taking place.                         \\
-		Status and role                   & The rank in a hierarchy and the conduct expected from that rank.                          \\
-		Authority                         & The tendency to defer to those taken to be knowledgeable or entitled to direct us.        \\
-		Claimed, actual, attributed       & The position presented, the position established afterwards, the position assumed by the recipient. \\
-		Empirical and normative expectation & What relevant others do, and what one believes they think ought to be done.            \\
-		Social norm                       & A cultural and situated prescription of appropriate conduct.                              \\
-		Reciprocity                       & The obligation to repay what others have given.                                           \\
-		Commitment and consistency        & The pressure to act consistently with earlier commitments.                                \\
-		Social proof                      & The inference drawn from the choices of people whose judgement we respect.                \\
-		Temperature of a message          & The confidentiality, closeness and tone that shape its interpretation.                    \\
-		Cybersecurity (definition)        & Organisation of resources, processes and structures protecting cyberspace from misalignments between de jure and de facto rights. \\
-		Epistemic asymmetry               & An advantage of knowledge held by one person or group within a specific domain.           \\
-		Technocratic dominance            & The use of technical knowledge to change others' behaviour, reducing their power or authority. \\
-		Teleological replacement          & The substitution of the victim's goal with the attacker's goal.                           \\
-		Epistemic backstop                & Recordings that regulate testimonial practices.                                           \\
-		Liking, unity, scarcity           & Cialdini's principles: attraction to people we like, identification with a group, and value given to what is scarce. \\
-		\bottomrule
+	\small
+	\renewcommand{\arraystretch}{1.2}
+	\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth} >{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+		\arrayrulecolor{black!70}\hline
+		\textbf{Concept} & \textbf{Use in the analysis} \\
+		\arrayrulecolor{black!20}\hline
+		\textbf{Request} ($q$) & What is being asked. Different requests are not interchangeable. \\
+		\hline
+		\textbf{Context} ($C$) & What the recipient had available, seen from the recipient's perspective. \\
+		\hline
+		\textbf{Action} ($a$) & The specific action to explain: reply, disclosure, approval or payment. \\
+		\hline
+		\textbf{Record} $R = (q, C, a)$ & One record per decision; connected records for the whole incident. \\
+		\hline
+		\textbf{Definition of the situation} & The activity that the participants understand to be taking place. \\
+		\hline
+		\textbf{Status and role} & The rank in a hierarchy and the conduct expected from that rank. \\
+		\hline
+		\textbf{Authority} & The tendency to defer to those taken to be knowledgeable or entitled to direct us. \\
+		\hline
+		\textbf{Claimed, actual, attributed} & The position presented, the position established afterwards, the position assumed by the recipient. \\
+		\hline
+		\textbf{Empirical and normative expectation} & What relevant others do, and what one believes they think ought to be done. \\
+		\hline
+		\textbf{Social norm} & A cultural and situated prescription of appropriate conduct. \\
+		\hline
+		\textbf{Reciprocity} & The obligation to repay what others have given. \\
+		\hline
+		\textbf{Commitment and consistency} & The pressure to act consistently with earlier commitments. \\
+		\hline
+		\textbf{Social proof} & The inference drawn from the choices of people whose judgement we respect. \\
+		\hline
+		\textbf{Relevant others} (social proof) & The people whose choices a person takes as evidence, selected by the context. \\
+		\hline
+		\textbf{Temperature of a message} & The confidentiality, closeness and tone that shape its interpretation. \\
+		\hline
+		\textbf{Cybersecurity} (definition) & Organisation of resources, processes and structures protecting cyberspace from misalignments between \emph{de jure} and \emph{de facto} rights. \\
+		\hline
+		\textbf{Epistemic asymmetry} & An advantage of knowledge held by one person or group within a specific domain. \\
+		\hline
+		\textbf{Technocratic dominance} & The use of technical knowledge to change others' behaviour, reducing their power or authority. \\
+		\hline
+		\textbf{Teleological replacement} & The substitution of the victim's goal with the attacker's goal. \\
+		\hline
+		\textbf{Epistemic backstop} & Recordings that regulate testimonial practices. \\
+		\hline
+		\textbf{Starting explanation} & The first account, written from the first reading and revised as the analysis develops. \\
+		\hline
+		\textbf{Three stages of the method} & Fact-gathering, analysis of findings, and recommendations last. \\
+		\hline
+		\textbf{Gap between account and evidence} & A guide to further work: which document, person or record would change the explanation. \\
+		\hline
+		\textbf{Liking, unity, scarcity} & Cialdini's principles: attraction to people we like, identification with a group, and value given to what is scarce. \\
+		\hline
+		\textbf{Regulatory function} & The effect that the existence of a recording has on behaviour, even when it is not consulted. \\
+		\hline
+		\textbf{Evidence and proposition} & The record that represents a claim, kept separate from the claim itself. \\
+		\hline
+		\textbf{Mandate} & The scope of what a genuine role is entitled to request. \\
+		\hline
+		\textbf{H1, H2, $T(m,d)$} & The executed destination, the instructed destination, and the executed transfer as a function of amount and destination. \\
+		\arrayrulecolor{black!70}\hline
 	\end{tabular}
 	\caption{Concepts of the sociological toolbox for social engineering.}
 	\label{tab:se-concepts}
