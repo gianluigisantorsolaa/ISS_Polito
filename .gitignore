@@ -24,3 +24,5 @@
 # Generated / heavy
 marker_out/
 notes.zip
+# Editor backup files
+*~*
