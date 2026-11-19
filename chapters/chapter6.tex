@@ -420,7 +420,7 @@ The window progresses: when all packets up to 20 are received and packet 21 arri
 
 IPsec v3 changes the paradigm by providing equal support to the two headers. In fact, ESP is mandatory, and AH is optional. This means that it is possible to find implementations of IPsec that do not support AH, i.e., integrity and authentication for the payload only, not for the header. IPsec v3 has also added support for single-source multicast.
 
-Moreover, since IPsec has been mainly used to create site-to-site VPNs, which involve channels with a lot of traffic, to avoid overflow of the sequence numbers, IPsec v3 has introduced \textbf{ESN} (Extended Sequence Number). ESN consists of 64 bits, even though inside packets there are still only 32 bits transmitted; the 32 least significant bits are the ones transmitted, and this is the default when using \textbf{IKEv2}.
+Moreover, since IPsec has been mainly used to create site-to-site VPNs, which involve channels with a lot of traffic, to avoid overflow of the sequence numbers, IPsec v3 has introduced \textbf{ESN} (Extended Sequence Number). ESN consists of 64 bits, even though inside packets there are still only 32 bits transmitted; the 32 least significant bits are the ones transmitted, and this is the default when using \textbf{IKEv2}. The others 32 are kept tracked in the memory of the two participant of the communication and set to +1 when the least 32 significant bit are overflow (full).
 
 Additionally, rather than having the separate encryption of the payload plus the \textbf{MIC} (Message Integrity Code), support for authenticated encryption (\textbf{AEAD}) has been introduced. Some clarifications about SA (Security Association) and SPI (Security Parameter Index) have been added to achieve faster lookup.
 
@@ -502,9 +502,6 @@ This is an example of the principle of "\textit{defense in depth}", creating mor
 
 The challenge lies in managing the entire structure, which involves handling the maximum number of systems (as in the first architecture) and all the gateways (as in the second one).
 
-
-
-
 \subsubsection{Secure gateway}
 \begin{wrapfigure}{r}{0.55\textwidth}
 	\centering
@@ -520,6 +517,23 @@ The concept of a secure gateway involves mobile users, such as employees who tra
 \end{wrapfigure}
 In this scenario, there is again the possibility of a double defense line: there is tunnel mode between the mobile node and the gateway, plus an end-to-end virtual channel between the mobile node and the final destination. Typically, the tunnel mode is used only for authentication and authorization (to grant access to the internal network), while the transport mode SA is typically employed for end-to-end protection, depending on the required level of protection.
 
+\subsubsection{Anonymous navigation}
+A VPN can also be used to hide the identity of a user while browsing. The \textbf{VPN client} on the user's machine opens a \textit{secure virtual channel} (a \textit{tunnel-mode SA}) toward a \textbf{VPN server}, crossing the Internet. All the traffic of the client is encapsulated and encrypted inside this tunnel, and the VPN server decapsulates it and forwards it to the final destination. As a result:
+\begin{itemize}
+	\item the \textbf{destination server} sees the connection as coming from the IP address of the VPN server, not from the real IP address of the client;
+	\item the \textbf{networks in between} (e.g., the local network, a public Wi-Fi, or the user's ISP) see only encrypted traffic directed to the VPN server, so they cannot know which sites the user visits or read the content of the communication.
+\end{itemize}
+
+This kind of anonymity is only \textbf{partial}, because the VPN server is a single point that knows everything: it sees the real IP address of the client, the destinations it contacts, and, after decapsulation, the traffic itself in clear (unless it is also protected at a higher layer, for example by TLS). The user is therefore moving trust from the ISP to the \textbf{VPN provider}. The provider may keep \textit{logs} of the connections (who connected, when, from which IP address, toward which destinations) and, if required, it can hand them over to the police or other authorities, for example after a court order or a request permitted by the laws of the country where it operates. It could also use or sell this data for its own purposes. Many providers claim a \textit{no-log policy}, but the user has no technical way to verify it and must simply trust the provider.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{../images/chapter6/Anonymous Navigation.png}
+	\caption{Anonymous navigation through a VPN}
+	\label{fig:anonymous-navigation}
+\end{figure}
+
+Moreover, the anonymity holds only at the network layer: the user can still be identified at the application layer, for example through cookies, logins to personal accounts, or browser fingerprinting. For a stronger form of anonymity, systems such as \textbf{Tor} distribute the trust over several relays, so that no single node knows both the source and the destination of the traffic.
 
 \subsection{IPsec key management}
 It is an important component that provides symmetric keys used for packet authentication and, if necessary, encryption to all the parties involved. To distribute these keys, it is possible to use an OOB (out-of-band) approach, such as passing the keys \underline{manually}. This is physically possible when there is a limited number of nodes, and there is the ability to directly inject the keys into those nodes. However, with many nodes, some \textbf{automatic in-band key distribution} is needed, and this, in turn, requires a protocol.
@@ -595,6 +609,7 @@ When an SA is opened, authentication is needed, and there are four ways to perfo
 
 	\item \textbf{Pre-Shared Key}
 	      \begin{itemize}
+	      	  \item Using an out of band channel to share the key, ISAKMP doesn't provide the key exchange
 		      \item The party ID may only be its own IP address (which creates problems with mobile users)
 	      \end{itemize}
 \end{itemize}
@@ -609,6 +624,10 @@ IPsec can \textbf{only be applied to unicast packets}, (\textit{no broadcast, no
 
 In essence, IPsec provides security for upper-layer traffic carried within IP packets. However, many protocols transported over IP inherit its inherent insecurity, as \textbf{IP addresses are not authenticated}, and \textbf{packets are unprotected} without IPsec. For these reasons, all protocols using IP as a carrier can be susceptible to attacks. Attackers often target neglected protocols, the so-called \textit{"service" protocols} (e.g., ICMP, IGMP, DNS, RIP), taking advantage of the lack of protection.
 
+\subsubsection{IP Insecurity}
+The Internet Protocol was designed without security in mind, and two basic weaknesses follow from this. First, \textbf{IP addresses are not authenticated}: the source address in a header is just a value written by the sender, so it can be forged (\textit{IP spoofing}) and the receiver has no native way to verify it. Second, \textbf{packets are not protected}: without IPsec, IP provides no \textit{integrity} (modifications go undetected), no \textit{authentication} (the origin of the data is not verified), no \textit{confidentiality} (the payload travels in clear), and no protection against \textit{replay} (a captured packet can be resent and accepted again).
+
+As a consequence, every protocol that uses IP as its carrier inherits these weaknesses and can be attacked. This is especially relevant for the so-called \textit{"service" protocols}, that is, the non-application protocols that support the network itself, such as ICMP, IGMP, DNS and RIP. They are often neglected in security design, yet a successful attack on them can disrupt the operation of the whole network, for example through forged routing updates in RIP or spoofed DNS responses. IPsec (through AH and ESP) can provide the missing properties, but only when it is explicitly deployed between parties that have an established Security Association.
 
 \section{"Service" protocols security}
 \subsection{ICMP Security}
@@ -696,6 +715,28 @@ ARP (Address Resolution Protocol) is used to \ul{discover the Level-2 address by
 \end{itemize}
 This technique is exploited by many attack tools, such as \texttt{Ettercap}.
 
+\subsection{DAI (Dynamic ARP Inspection)}
+ARP has no authentication: a host accepts an ARP reply even if it never sent a request, so an attacker can send fake replies that associate its own MAC address with the IP address of another host (\textit{ARP spoofing}) and redirect traffic to itself. \textbf{Dynamic ARP Inspection (DAI)} protects the network against this attack. It runs on the switch, which checks the ARP packets received on \textit{untrusted ports} against a trusted database of IP-to-MAC bindings, usually built by \textit{DHCP snooping}. If an ARP packet carries an incorrect IP-to-MAC mapping, the switch drops it.
+
+DAI relies on DHCP snooping: the switch observes the DHCP exchanges and records which IP address was leased to which MAC address on which port. This table is what DAI uses to verify ARP traffic. Switch ports are classified as \textit{trusted}, such as uplinks toward other switches or toward the DHCP server, which are not inspected, or \textit{untrusted}, such as end-user ports, where ARP packets are checked. In this way DAI blocks fake ARP replies and works like a firewall for ARP traffic, so that a device cannot pretend to be someone else on the local network.
+
+The main limitation is that DAI depends on the DHCP-based binding table. Hosts configured with \textbf{static IP addresses} do not appear in that table, so their legitimate ARP packets may be dropped. In such networks the bindings must be configured manually (for example with static ARP ACLs), or the static hosts must be excluded from inspection, which reduces protection. DAI is implemented by several vendors, including Cisco, Huawei, Juniper, Meraki, Korenix and CommScope.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{../images/chapter6/DAI Example.png}
+	\caption{An example of Dynamic ARP Inspection}
+	\label{fig:dai-example}
+\end{figure}
+
+Figure~\ref{fig:dai-example} shows how DAI works in practice. The switch keeps a \textit{DHCP snooping database} with the IP-to-MAC bindings learned from the DHCP exchanges: 10.1.1.1 is bound to \texttt{1a2b:1111:cdef}, 10.1.1.2 to \texttt{1a2b:2222:cdef} and 10.1.1.3 to \texttt{1a2b:3333:cdef}. The two hosts are connected to \textit{untrusted} ports, so every ARP packet they send is checked against this table, while the file server is connected to a \textit{trusted} port and its ARP traffic is not inspected.
+
+\begin{itemize}
+	\item \textbf{Legitimate Host 1} sends a gratuitous ARP broadcast announcing the binding 10.1.1.1 $\leftrightarrow$ \texttt{1a2b:1111:cdef}. This matches the entry in the DHCP snooping table, so the switch considers it valid and \textbf{forwards} it.
+	\item \textbf{The compromised host} (IP 10.1.1.3, MAC \texttt{1a2b:3333:cdef}) sends a \textit{crafted} gratuitous ARP broadcast announcing 10.1.1.3 $\leftrightarrow$ \texttt{1a2b:2222:cdef}, that is, a binding that uses the MAC address of the file server. According to the table, 10.1.1.3 should be bound to \texttt{1a2b:3333:cdef}, so the binding is invalid and the switch \textbf{drops} the packet. The forged announcement never reaches the other hosts, and their ARP caches are not poisoned.
+\end{itemize}
+
+The file server is placed on a trusted port. This is a typical choice for servers and network devices, which often have \textbf{static IP addresses} and therefore do not appear in the DHCP snooping table: if their port were untrusted, DAI would drop their legitimate ARP packets.
 
 \subsection{TCP SYN flooding}
 \begin{figure}[h]
@@ -769,6 +810,19 @@ Upon receiving the ACK and retrieving the keyed digest, the server:
 	\item Decodes the value of $m$ from the 3-bit encoding in the SYN cookie, enabling the reconstruction of the SYN queue entry.
 \end{itemize}
 
+\subsubsection{SYN Cookie: Linux Vs Windows}
+The two main operating systems defend against SYN flooding in different ways.
+
+\textbf{Linux} uses \textit{SYN cookies}. The mechanism is controlled by the kernel parameter \texttt{net.ipv4.tcp\_syncookies} and is normally enabled by default, but it is activated only when the queue of half-open connections (the SYN backlog) is full. In normal conditions the server keeps the usual per-connection state, and only under attack it switches to stateless mode: it encodes the connection information inside the initial sequence number of the SYN-ACK, computed with a keyed function (a MAC) over the addresses, the ports and a timestamp, and it allocates resources only when the final ACK returns a valid cookie. The price is a cryptographic computation for every SYN received, and the loss of some TCP options, because the cookie has very few bits to store them: only a coarse value of the MSS fits in it, while options such as window scaling and SACK survive only if the TCP timestamp option is used to carry them.
+
+\textbf{Windows} does not use SYN cookies. It relies instead on a built-in, resource-adaptive architectural defense called \textbf{SynAttackProtect}. The system enters an \textit{attack state} when the number of half-open connections exceeds thresholds that are calculated dynamically, and then it applies several countermeasures:
+\begin{itemize}
+	\item \textbf{Aggressive timeouts}: the timeout for half-open connections is drastically shortened, and the number of SYN-ACK retransmissions is heavily reduced, so that fake connections are discarded faster.
+	\item \textbf{Resource reclamation}: the TCP stack speeds up the recycling of the memory used for the \textit{Transmission Control Block} (TCB) queue.
+	\item \textbf{Disabling advanced socket options}: to minimize the memory consumed by each connection, Windows temporarily turns off resource-heavy, optional extensions.
+\end{itemize}
+
+\noindent In summary, the Windows approach \textbf{avoids the MAC computation} for each connection and \textbf{permits all TCP options} in the handshake, but at the price of a more complex (and possibly more error-prone) architecture. The Linux approach is simpler and stateless, but it costs a cryptographic operation per SYN and limits the TCP options during an attack.
 
 \subsection{DNS security}
 The \textit{Domain Name System} (\textbf{DNS}) is a crucial service that provides the translation of names to addresses and vice versa. It plays a vital role as users commonly utilize names rather than IP addresses to access websites. DNS operates through \textbf{queries}, executed over port \texttt{53/UDP}, and \textbf{zone transfers} (information transfers between servers) over port \texttt{53/TCP}. As of now, DNS \textbf{lacks intrinsic security}, and while \textit{DNS-SEC} is in development, it has not been fully implemented.
@@ -889,7 +943,7 @@ An alternative is \textit{DNS over HTTPS} (\textbf{DoH}), where queries and resp
 
 These protocols are adopted by Cloudflare and Google. While these methods protect against sniffing attacks, they do not guarantee privacy from the server you are contacting.
 
-
+In the picture before DoT and DoH happens between OS and the caching server (first server connection to prevent server personification)
 
 \subsubsection{Protection from IP spoofing}
 
