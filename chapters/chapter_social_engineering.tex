@@ -15,7 +15,7 @@ The aim is a better interpretation of an incident than the ones produced by ster
 \end{nota}
 
 \begin{nota}{A method for the reader}
-	The chapter follows the order in which the concepts are needed. It starts from the request, then introduces the notion of context, the formal record used to organise an incident, the concepts of status, role and authority, the notions of expectation and social norm, and the idea of the definition of the situation. Two cases are then reconstructed using these tools. The chapter ends with the principles of influence that explain why some requests are accepted more easily than others.
+	The chapter follows the order in which the concepts are needed. It starts from the request, then introduces the notion of context, the formal record used to organise an incident, the concepts of status, role and authority, the notions of expectation and social norm, and the idea of the definition of the situation. Two security cases are then reconstructed using these tools, followed by a case outside cybersecurity, the Challenger launch decision, which brings organisational culture, deviation and trust into the analysis. The chapter ends with the principles of influence that explain why some requests are accepted more easily than others.
 	
 	Each concept is introduced through an example from everyday university life before it is applied to a security case. The aim is not to memorise labels, but to be able to recognise each concept in a new situation and to use it to make an explanation more precise.
 \end{nota}
@@ -440,6 +440,201 @@ The investigators kept their focus. They distinguished what was already known fr
 
 Refusals to answer need the same care. If someone refuses to answer, they should not be treated as a partner in the incident or as a suspect without proof. If the mandate allows the question to be asked, the law may provide a way to obtain a reply; if not, one cannot draw inferences from silence. Nor should one attach prejudices about whether someone answers, is literate or seems nervous, because one does not know how they react in the situation.
 
+\section{The Challenger case: engineering advice and the launch decision}
+
+The cases examined so far are cybersecurity incidents. This section changes both the scale and the context of the inquiry. On 28 January 1986 the Space Shuttle Challenger was lost about seventy seconds after lift-off. It was the first of the two main tragedies of the Space Shuttle programme; the second, the loss of Columbia, came almost twenty years later. The Challenger disaster is not a cybersecurity incident, and there is no evidence of a social engineering attack in it. Yet the decision-making process that led to the launch is a fruitful field of lessons for anyone who analyses cybersecurity incidents.
+
+Sociologically, the disaster can be read as an organisational, cultural and communication problem related to a technical failure. Technology is always present in the analysis; the sociological reading adds further layers over it. The analysis here does not concern the technical causes of the explosion, but the chain of decisions, and of changes in decisions, that turned a red signal into a green one. The case is discussed with respect for the victims and their families, and without blaming the people involved.
+
+\begin{casehistory}{Challenger (launch decision, 1986)}
+	The solid rocket boosters of the Space Shuttle were built from several segments, and the joints between them were sealed by O-rings. The seals were deemed safe only within a window of temperatures, and the temperatures measured on the nights before the launch were low. Thiokol, the company that supplied the boosters, recommended an O-ring temperature of at least $53^{\circ}$F, about 11--12$^{\circ}$C, at launch. During a teleconference, the manager of the Solid Rocket Booster Project at NASA's Marshall Space Flight Center asked Thiokol for a launch recommendation, and Thiokol's vice-president for space booster programmes replied that Thiokol could not recommend launch on that engineering basis. Thiokol asked for a pause and reviewed its position internally: the management review changed the position, while the booster seal engineer and another engineer continued to oppose the launch. When the teleconference resumed, Thiokol presented a favourable oral recommendation. The deputy director of science and engineering at Marshall then asked for the recommendation in writing, and Thiokol signed a written recommendation to launch, which was sent to the Kennedy and Marshall centres. The launch had already been rescheduled several times. After the accident, a presidential commission investigated it, and four senior NASA officials testified that they had not known of Thiokol's objections before the launch.
+\end{casehistory}
+
+\subsection{From a technical concern to a decision}
+The technical concern is simple to state. The boosters were not a single solid element: they were built from several parts joined together, and the joints had to be sealed to resist forces, accelerations and temperatures. The problem came with low temperature, because there was a window of temperatures within which the boosters could be deemed safe and operative. This is the core of the problem, and it is a technical one.
+
+But when a situation is uncertain, and different elements come together and contrast one another, the question is no longer technical: it becomes a decision-making process. Such processes are not certain. They rely on organisational cultures and on internal and external pressures, such as the principles of influence described later in this chapter. They also depend on the public, on public opinion and on the media, and on economic and political variables.
+
+This is not a judgement. Economic and political variables are not illegitimate in such a process, because science and technology do not exist in a void. They are human activities, and humans are social and political by design: we evolved precisely because we built political and social relationships and contexts, which existed long before modern science did.
+
+In the Challenger case, the question was whether the O-ring seals would resist the low temperatures measured over the days before the launch. The launch had already been rescheduled a few times before 28 January, and this was already a pressure. It concerned not only public opinion and the reputation of the institutions, but also the work of unloading and reloading, going back and redoing procedures. A great deal was at stake. At the end of the day there was an uncertain situation, an issue with low temperature, and a decision waiting to be taken by somebody.
+
+\subsection{A map of actors}
+Moving back to cybersecurity incidents, the first step of an analysis is to reconstruct a map of the participants. In sociology this is called a \emph{map of actors}. As in Goffman, actors are people with a role and a position, and therefore with expectations and norms attached to them.
+
+In the Challenger case the map includes four positions at Thiokol, the supplier of the boosters (the booster seal engineer, the vice-president for engineering, the vice-president for space booster programmes and the senior vice-president for operations), and two positions at NASA's Marshall Space Flight Center (the manager of the Solid Rocket Booster Project and the deputy director of science and engineering). The names do not matter for the analysis, even though they are public: what matters is the positions. The accident was investigated by a presidential commission, the Rogers Commission, of which the physicist Richard Feynman was a member, and its report is publicly available (Presidential Commission on the Space Shuttle Challenger Accident, 1986).
+
+\subsection{Two records in the same sequence}
+The initial position can be called $T_0$: no clearance for the launch, because the temperatures were below the minimum that Thiokol had indicated. NASA, the public institution responsible for the programme, then asked its supplier for a recommendation.
+
+\begin{nota}{Notes}
+	For example, a company runs a large IT transformation programme. Along the way, a technical component is found to be outside its safety range, and someone asks a partner in the programme for a safety check: should we stop, or go on? The question has the same structure as the one asked before the Challenger launch.
+\end{nota}
+
+This is the first action to trace with the method adopted in this chapter, adapted from the NTSB method. It produces a first record:
+\[
+R_1 = (q_1,\ C_1,\ a_1)
+\]
+\begin{description}
+	\item[$q_1$.] NASA-Boosters asks Thiokol for a launch recommendation.
+	\item[$C_1$.] The technical presentation and the recommendation against launching below the stated O-ring temperature: the low temperatures of the previous nights and the operational window of the seals.
+	\item[$a_1$.] Thiokol cannot recommend launch on that engineering basis.
+\end{description}
+
+The action can also be described as double: Thiokol opens an internal discussion, and NASA waits. The internal discussion put engineers and technicians in controversy with managers. In the end the managers, who were responsible for the decision, decided to take the risk. They did not have a tragedy in mind, and the analysis does not judge their decision morally: it remains evaluative and rational. What it records is that those in charge changed the recommendation, and that the new recommendation was first given orally in the teleconference.
+
+A second record follows:
+\[
+R_2 = (q_2,\ C_2,\ a_2)
+\]
+\begin{description}
+	\item[$q_2$.] NASA-Engineering asks for the recommendation in writing.
+	\item[$C_2$.] The internal review is completed, and a favourable oral recommendation has already been presented.
+	\item[$a_2$.] Thiokol signs the written recommendation to launch.
+\end{description}
+
+Part of the action of the previous phase becomes the context of the next one. This is why the sequence is a chain: everything is connected and adds elements to the context. The order matters. The recommendation had already changed before NASA asked for a written copy, so the written request concerns a position that was already favourable. An oral okay was not enough, because the more formal a process is, the more solid, written and documented proof it requires. A teleconference is an oral exchange: people hear what is said, but nothing remains at its end. The written permission is therefore not the same thing as the teleconference, and whoever reconstructs the sequence backwards has to find proof of the written permission itself.
+
+The two records also rest on different sources. $R_1$ is reconstructed from later testimony, while $R_2$ rests on a contemporaneous document, the signed recommendation. Comparing the two records, the request changes (a recommendation, then a written copy) and so does the response (cannot recommend launch, then a signed favourable recommendation). The change in recommendation still requires an explanation.
+
+\subsection{What changed, and what did not}
+The change was not due to new technical information. Nobody discovered that the thermometer measuring the temperature over the previous nights was unreliable, and nobody found that the technical instructions setting the window of safe operating temperatures were wrong. The change must therefore have occurred at a different level. The uncertainty was reduced by a decision driven by something else: organisational roles, and the social representation of the risks involved.
+
+The word \emph{risks} is in the plural on purpose. There are operational and safety risks, but also reputational, economic, political, social and geopolitical risks. The race to space was born during the Cold War, and although in 1986 the Cold War was coming to an end (the Berlin Wall fell three years later), one may formulate a hypothesis: what would happen to a country's international reputation as the leader of the space race if it could not even send the shuttle into orbit, kept rescheduling the launch, and could not provide boosters that worked at low temperatures? This is a hypothesis, not the truth, and not a claim about the motive. It is a variable whose role has to be investigated, rather than assumed or ignored.
+
+The case shows that technical knowledge does not cover all the variables involved in technical decisions. A technical education prepares one to assess the seals; it does not by itself explain why an assessment changed.
+
+\subsection{Documents, interviews and missing evidence}
+To investigate these elements, technical data are not sufficient, and neither are job titles. The commission analysed documents and reports produced after meetings. After every official meeting at the institutional level, whether in a company, a university or a non-governmental organisation, there should be a report, and the analysis starts from these documents because they are official. When documents are missing or insufficient, the people who took part in the meetings are interviewed. A report and an interview are not equivalent: they have different levels of reliability, solidity and accuracy, and they have to be combined. This is why the work is called an investigation. There are no certainties; one gathers enough clues to make one's explanation more solid than any alternative, and one may go back and revise it.
+
+Accuracy is not a matter of style. Without it, the analysis of a social engineering attack is worth nothing, and nothing in it should remain at an abstract level. The analyst must also know what is not known: not everything, but everything that is unknown, missing or out of reach. It is a kind of Socratic principle applied to social engineering analysis.
+
+\begin{nota}{Notes}
+	For example, an analyst should be able to sing the reconstruction like a pop star, or better like a metal band, with all the energy available, including the parts that are still missing and that the analyst does not hold.
+\end{nota}
+
+A hypothesis about the missing evidence shows how this works. Between the favourable oral recommendation and the start of the launch procedure, the written recommendation probably travelled by fax, the means of communication used before email became widespread. A fax machine scanned one or more sheets of paper, sent them over a telephone line, and the receiving machine decoded the signal and printed the same content. If a document of this kind may be the link between what the analyst has and what is missing, the analyst has to go and look for it, or for its printed copy.
+
+Suppose the document had been destroyed. In some incidents an actor may decide to destroy evidence. If evidence is destroyed on the recipient's side, it can be sought on the sender's side. In the case of a fax, the sender kept a copy of the original and a confirmation that the transmission had ended without errors. Such a confirmation works like a certificate, comparable to today's cryptographic certificates: it testifies to the exchange even when the evidence has been destroyed.
+
+\subsection{Opening the black box}
+The two records redraw the decision path, but the internal discussion remains a black box. For a sociological analysis of social engineering this is the crucial part, because it is imbued with organisational cultures, written and unwritten norms, and procedures. One element that helps to open it is the way an organisation is structured.
+
+\begin{nota}{Notes}
+	For example, consider a technology provider organised horizontally, with few differences between roles. One may expect it to listen to issues and recommendations on their merit rather than according to the role of whoever raises them: everyone can reach everyone else, including the chief executive or the founders when they still hold operational roles. In a pyramid, a message must pass through an office leader, a group leader, a section leader, an area leader, a business unit leader and some vice-presidents before reaching the chief executive or the founder. The sender may give up; and if they do not, there are so many turning points where the information can be lost that it is more likely to be lost than to reach the top. The sender tried, but the message died before reaching its recipient.
+\end{nota}
+
+It would be naive to conclude that every organisation should be horizontal: both structures have advantages and limits. But the structure gives the analyst concrete questions. What was the role of the technicians? How was the company organised? Did its members have agency? \emph{Agency} is the possibility of actively affecting the structure of an organisation through one's behaviour. When an organisation is close to collapse, people censor themselves and stop trying, because they believe, often on the basis of a track record, that doing something is the same as doing nothing: nothing moves, nothing changes, and the impact of their actions cannot be seen. Understanding how an organisation works helps to detect whether an internal discussion followed a rigid method of interaction or a more open one, in which people felt free to speak.
+
+\subsection{Point of view and the definition of the situation}
+A commission of inquiry has investigative powers, but its main tool, like that of any investigator or consultant, is the interview. In different hearings new details emerge, and not all actors turn out to have had the same amount of information. This is a matter of information theory as much as of sociology.
+
+For this reason one variable must be set before using the formal tools: the point of view from which the event is traced. Following one perspective, the analyst must establish what evidence could have been seen from that perspective. An investigation does not adopt the point of view of a universal observer; the analyst cannot take a god's-eye view. Otherwise the analysis mixes up who should or could have known what, and loses the premises of a rational explanation.
+
+The commission's report shows why this matters. Some actors testified that they had not known a relevant piece of information, namely that the supplier's first recommendation had been not to launch. Whether this happened by design or not, the process allowed a piece of information not to be transparent to everybody involved, and this changed the definition of the situation. A situation in which there was a negative recommendation, a controversy about uncertain measurements, a pause and then a positive recommendation is completely different from one in which there was only a pause, a discussion and a positive recommendation. Those who know only the second version are unaware that a controversy ever existed. This is not a small difference: it changes the definition of the situation entirely.
+
+The last part of a final report concerns recommendations for avoiding similar incidents. Speaking generally, one such recommendation could concern the way information circulates among the players in a process, so that every step is transparent to everybody involved. The purpose of the analysis is not to blame, but to learn what the process allowed.
+
+\subsection{Exercise on the Challenger case}
+Two questions help to apply these tools. First, as a member of the commission investigating the decision-making process, which communication would one examine to explain how the objection failed to reach senior review? The answer should identify one or more pieces of evidence that would explain precisely why some officials stated that they had not known about the initial negative recommendation. Second, how solid would such evidence be? A fax, an internal report written after a meeting, and a call or an oral statement have different degrees of solidity, and the answer should say what each could establish.
+
+\subsection{Proving rather than labelling}
+Re-analysing events of this kind invites ex-post prejudices: it was a wrong culture, a toxic atmosphere, unequipped people in the main roles. These statements are not necessarily false, but whatever is stated in an analytical report has to be proved.
+
+A good way to proceed, after mapping the interactions among the players and their organisations, is to ask what a person within this network could have learned by living and participating in it. Written permissions and codified procedures are eloquent documents, but about one part of the organisation: its formal procedures, and the way it would like to be perceived inside and outside. This is the distinction between codified and non-codified norms. The written part of the events corresponds to the codified norms; pressures, a vertical culture and a controversy between managers and technicians are not codified. A large literature has studied this case, on risk management in companies and on the social perception of risk and uncertainty, and one may add the way people with different backgrounds interact or conflict in a highly technical and multicultural organisation. The only way to reach these elements is, as the commission did, to interview each person involved about what happened and about the atmosphere in which it happened.
+
+Engineering advice within an organisation can therefore be examined along three dimensions:
+\begin{itemize}
+	\item \textbf{Roles}: who can assess, recommend or ask for clarification?
+	\item \textbf{Information}: which objection reaches which decision-maker?
+	\item \textbf{Influence}: how does an assessment enter the recommendation?
+\end{itemize}
+These lead to further questions about pressures, organisational practices and the conditions under which people speak up.
+
+\section{Culture, deviation and patterns}
+
+\subsection{The past as strata of practices}
+Interviews about a single event are not enough, because something is still missing: the past. Culture is the stratification of elements that are meaningful for a group, an organisation, a people or a tribe. Addressing only single episodes is different from digging into the strata of decision-making practices, which are a proxy of an organisation's internal culture and of its leadership.
+
+The Challenger launch was not the first launch in the history of the Space Shuttle programme, and there was a track record of past launches. The analyst can ask what can be learned from these records, and how the culture of decision-making stratified within the organisation. The answer is a symptom of the processes and practices at work when difficult and uncertain decisions have to be made. Without these data, the idea that pressures, stereotypes separating technicians and managers, or economic, reputational and political constraints played a role remains a conjecture, unless a data-driven context compatible with these plausible symptoms can be provided.
+
+\subsection{From past events to patterns of deviation}
+The analysis of the past can be formalised as a sequence:
+\begin{enumerate}
+	\item a list of past events, such as past launches;
+	\item the detection of anomalies;
+	\item the description and analysis of each anomaly;
+	\item its interpretation;
+	\item the recognition of patterns;
+	\item the analysis of the incident in the light of this past evidence.
+\end{enumerate}
+The first steps amount to a review of the history of the organisation's past decisions, which shows whether there is a pattern of deviation. When the analysis of an accident begins, the analyst starts blank; then the environment is analysed and understood, and the analysis moves to the history of possible, plausible anomalies.
+
+In sociology, \emph{deviation} is any shift from a codified norm of behaviour. A deviation that keeps happening becomes a pattern, and then a routine, even though the official procedure says something else.
+
+Once a pattern has been detected, the analyst looks at the case with different eyes. Small elements, micro-events, are no longer chaos or noise: they may be symptoms of the pattern, and they can be grouped, identified and read in a different way.
+
+\subsection{Trust in the supplier}
+One conjecture concerns the relationship between the agency and its supplier. The supplier holds specialised knowledge: whatever the agency's own expertise, the supplier of a component is the best entity to ask about that component, because it created the technology. So if it says yes or no, it is trusted. This trust derives from the epistemic asymmetry discussed earlier in this chapter. Because the supplier is trusted, the agency complies: if it says yes, all the knowable variables are assumed to have been analysed; if it says no, prudence is required.
+
+\subsection{An example of deviance}
+A generic example shows what a deviation can look like. It does not describe what happened in the Challenger case.
+
+\begin{nota}{Notes}
+	For example, the top decision-maker of a project is under reputational, economic, political and practical pressures, and has already decided to launch. To justify the decision, the process must still be followed, and the supplier, who holds the specialised knowledge, must arrive at the same decision. The codified procedure requires starting from A, passing through B and arriving at the decision C: this is a data-driven decision-making process. In the deviant process the decision-maker starts from C and adjusts A and B to comply with it. The sequence is no longer A, B, C, but C, A, B, and C existed before A and B. That is the deviation.
+\end{nota}
+
+In a pattern where those who hold the highest roles are treated as indisputable, even an element that looks like good practice can take on a different meaning. A request to put the approval of a launch in writing could be read as part of such a deviant cycle: not ``we launch because you said yes and we trust your specialised knowledge'', but ``we want written proof because we have already decided, and if something goes wrong we need evidence that everything was done as codified in the procedure''. In that case goals and means are switched. This is a reading that would need evidence, not a conclusion.
+
+\subsection{Deviation exists; the task is to prove it}
+In a world where everything is quantified, where risks are measured and move a great deal of money, uncertainty, although part of life, tends to be dismissed as the worst thing that can happen. In such a world it is not uncommon to analyse incidents in which deviations of this kind are at the root of what happened.
+
+The analyst's task is not to establish that deviation exists. Sociology has known this since its beginnings, around the middle of the nineteenth century. The task is to interpret deviation and to prove it within the context of the specific incident under analysis.
+
+\section{Trust and expert systems}
+
+\subsection{Complex and complicated societies}
+Trust is probably the most important sociological concept for the analysis of social engineering. Today's societies are complex and complicated. They are \emph{complex} because outcomes derive from the interaction and interference of many variables, so describing social reality in terms of simple cause and effect is difficult and poor. They are \emph{complicated} because people struggle to understand their situation: defining the situation requires a great deal of energy to identify, analyse and understand it, and to recognise patterns of the kind described above.
+
+\subsection{Trust as a condition for acting}
+In such a context we would be paralysed without trust. The idea draws on Kierkegaard's philosophy of action, in which acting means choosing and giving up alternatives. Without trust we would not have enough elements to decide yes or no in almost any situation we face every day.
+
+\begin{nota}{Notes}
+	For example, choosing a career, a university, a course or a city; deciding whom to befriend, whose medical advice deserves trust, and who will help in case of need; getting into a car, which is more a supercomputer than a kinetic machine; connecting to the internet, keeping social media profiles, spending money online, waiting for a product to arrive, or going to a concert. In most of these activities we have less knowledge than NASA had in 1986 for the Challenger launch, and we do not see the process.
+\end{nota}
+
+A person trained in engineering may understand something about some of these processes, but misses many others, and engineers are a very small share of the population. Society is too large, and too many people lack any given specialised knowledge. Society has become more and more specialised, and practically every part of life is technically driven and based on expertise.
+
+\subsection{Expertise}
+\emph{Expertise} is an abstract concept, harder to define than it seems. It identifies who, in a certain field, holds a special knowledge that is a scarce resource by default: a profound knowledge that the vast majority of people cannot even understand. Knowledge today is so vast, and branched into so many fields, that not even Leonardo da Vinci could be Leonardo da Vinci today.
+
+\subsection{Trust by default}
+If the principle at the basis of society were ``I need to see to believe, I need to check to agree, I need to control and understand everything perfectly to follow'', society would be paralysed.
+
+\begin{nota}{Notes}
+	For example, people attending a lecture in a university room usually did not see the room being built. They do not know whether everything was done properly, whether somebody deviated from the procedures, whether the roof is safe or the electrical system is sound, and they believe, logically and understandably, that nobody will hurt them while they are there. They take for granted the statics of the room, its materials, the internet connection, the air system, and the fact that the university is a well-constructed, well-organised and safe place. They did not take part in any of these expert systems before deciding to come; they trust them by default.
+\end{nota}
+
+This is one reason why past experience matters in an analysis. One of the strata on which trust is built is what happened in the past: to the people who used the same places and systems before us, and to ourselves before today. In addition, the societies we live in give us enough elements to believe that, at least for now, most of the expert systems that govern them are trustworthy, even though the world as a whole is full of injustice, violence, inequality and danger. In a distribution of probabilities, most of the weight lies on yes, not on no.
+
+\subsection{Attacks on trust}
+Many cyber attacks are meant to steal something. When they are not, or when theft is only part of a larger aim, the key point may be terror. A terroristic attack is a criminal activity meant to terrify public opinion. Some cyber attacks are therefore terroristic attacks, while others are ordinary criminal activities, and the difference lies in the magnitude of the impact at the social level. Wanting to steal money does not by itself make someone a terroristic cybercriminal; wanting to erode trust in an expert system does.
+
+\begin{nota}{Notes}
+	For example, false bomb alarms sent to schools, which required some form of cyber attack to be delivered, were meant to take down trust in an expert system. Attacks on civil aviation, transportation, public places, banks and credit cards can have the same aim.
+\end{nota}
+
+\subsection{The final good}
+Incidents and accidents like the Challenger are investigated not only to protect the goods and resources involved in a system. The highest good at stake in some incidents is the glue that holds together groups, people, technologies, routines, habits and well-being in highly specialised and technologically advanced societies. That is the final good.
+
+\begin{nota}{Notes}
+	For example, a society that relies heavily on financial activities pays particular attention to financial crime. A fraudster who has killed nobody may be sentenced to 150 years in prison, as if they were a mass murderer. The disproportion is rational once one asks what the system is trying to condemn and protect in that situation: not only the people who were defrauded, but an expert system, namely trust in financial activities.
+\end{nota}
+
+For the same reason, attacks on schools are not chosen by chance. In many countries, though unfortunately not in all, going to school is part of the daily routine of the younger generations, who are the future of a society and its most vulnerable and most valuable part. An attack that targets them targets the future of a society, and tries to turn a routine into an anomaly, something that can no longer be trusted, in the place that should be the safest of all.
+
+Engineers who analyse cybercrime, mitigate cyber attacks and design solutions to these problems also work, in part, as sociologists. They protect the most valuable element of today's societies: the possibility of trusting without knowing, and without being part of an expert system, so that society can function and reproduce itself with the least possible worry about the consequences of trusting. It is a social mission.
+
 \section{Influence: why some requests are accepted}
 
 Social engineering works because people follow patterns of influence that are shared by almost all human beings. The psychologist Robert Cialdini described seven principles of influence, studied in psychology, social psychology, consumer behaviour, diplomacy and marketing. These contexts share many elements with social interaction in general, so their findings can be adapted to the analysis of social engineering. This section introduces the seven principles: reciprocity, commitment and consistency, social proof, authority, liking, unity and scarcity. The principles are not a checklist of attacks. They are patterns that help to explain why a request was accepted.
@@ -596,6 +791,18 @@ The sociological toolbox developed in this chapter can be summarised in the foll
 			\textbf{Mandate} & The scope of what a genuine role is entitled to request. \\
 			\hline
 			\textbf{H1, H2, $T(m,d)$} & The executed destination, the instructed destination, and the executed transfer as a function of amount and destination. \\
+			\hline
+			\textbf{Map of actors} & The people involved, each with a role and a position, and therefore with expectations and norms. \\
+			\hline
+			\textbf{Codified and non-codified norms} & Written procedures and permissions, as opposed to pressures, habits and cultures that are not written down. \\
+			\hline
+			\textbf{Agency} & The possibility of actively affecting the structure of an organisation through one's behaviour. \\
+			\hline
+			\textbf{Pattern of deviation} & A shift from a codified norm that keeps happening until it becomes a routine. \\
+			\hline
+			\textbf{Trust in expert systems} & Trust given by default to systems whose working we do not see or control. \\
+			\hline
+			\textbf{Terroristic cyber attack} & An attack whose aim is to erode trust in an expert system, rather than only to steal. \\
 		\arrayrulecolor{black!70}\hline
 	\end{tabular}
 	\caption{Concepts of the sociological toolbox for social engineering.}
